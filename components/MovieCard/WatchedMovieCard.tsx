@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Play, X, Clock, Film, Star } from "lucide-react";
 import { ContinueWatching } from "@/store/playerStore";
 import { formatWatchTime, getWatchProgress } from "@/hooks/useContinueWatching";
+import { defaultPoster } from "@/constants";
 
 interface WatchedMovieCardProps {
   item: ContinueWatching;
@@ -89,7 +90,7 @@ const WatchedMovieCard: React.FC<WatchedMovieCardProps> = ({
           )}
 
           <Image
-            src={item.movie.poster_url}
+            src={item.movie.poster_url || defaultPoster}
             alt={item.movie.name}
             fill
             className={`object-cover transition-all duration-500 group-hover:scale-110 ${

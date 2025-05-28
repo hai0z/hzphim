@@ -7,6 +7,7 @@ import { MovieDetailRespone } from "@/type/MovieDetailRespone";
 import ReactPlayers from "react-player";
 import { useContinueWatching } from "@/hooks/useContinueWatching";
 import ContinuedModalSimple from "./ContinuedModalSimple";
+import Image from "next/image";
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 interface IProps {
   link: string;
@@ -51,11 +52,12 @@ export default function Player({ link, data, ep, ver }: IProps) {
       <ReactPlayer
         ref={playerRef}
         light={
-          <img
+          <Image
             src={data.movie.thumb_url}
             alt="Thumbnail"
-            width={"100%"}
-            height={"90%"}
+            width={1024}
+            height={720}
+            quality={25}
           />
         }
         url={link}

@@ -18,6 +18,7 @@ import useWindowDimensions from "@/hooks/useWindowDimensions";
 import { useRouter } from "next/navigation";
 import { Item } from "@/type/ListMovieRespone";
 import { FaCircleInfo, FaHeart } from "react-icons/fa6";
+import { defaultPoster } from "@/constants";
 
 interface IHomeSwiperProps {
   data: Item[];
@@ -68,7 +69,7 @@ const HomeSwiper: React.FC<IHomeSwiperProps> = ({ data, listOverView }) => {
                   prefetch={false}
                 >
                   <Image
-                    src={m.thumb_url}
+                    src={m.thumb_url || defaultPoster}
                     alt="film"
                     className="w-full object-center md:h-[80vh]"
                     width={1920}
@@ -197,7 +198,7 @@ const HomeSwiper: React.FC<IHomeSwiperProps> = ({ data, listOverView }) => {
                       layout
                     >
                       <Image
-                        src={m.poster_url}
+                        src={m.poster_url || defaultPoster}
                         width={300}
                         height={450}
                         loading="lazy"

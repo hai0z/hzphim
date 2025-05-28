@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import classNames from "classnames";
 import { Item, Pagination } from "@/type/ListMovieRespone";
+import Image from "next/image";
+import Link from "next/link";
 
 interface SearchResponse {
   data: {
@@ -14,20 +16,19 @@ const MovieSearch: React.FC = () => {
   const [results, setResults] = useState<Item[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-
-  // Handle search API call
+  const [loading, setLoading] = useState(false);
   const fetchMovies = async (keyword: string) => {
     if (!keyword.trim()) {
       setResults([]);
       setIsOpen(false);
       return;
     }
-
+    setLoading(true);
     try {
       const response = await fetch(
         `https://phimapi.com/v1/api/tim-kiem?keyword=${encodeURIComponent(
           keyword
-        )}&page=1&limit=10`
+        )}&page=1&limit=5`
       );
       const data: SearchResponse = await response.json();
       setResults(data.data.items || []);
@@ -36,10 +37,11 @@ const MovieSearch: React.FC = () => {
       console.error("Error fetching movies:", error);
       setResults([]);
       setIsOpen(false);
+    } finally {
+      setLoading(false);
     }
   };
 
-  // Debounce search
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       fetchMovies(searchTerm);
@@ -48,7 +50,6 @@ const MovieSearch: React.FC = () => {
     return () => clearTimeout(delayDebounceFn);
   }, [searchTerm]);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -63,7 +64,6 @@ const MovieSearch: React.FC = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Handle item selection
   const handleSelect = (movie: Item) => {
     setSearchTerm(movie.name);
     setIsOpen(false);
@@ -100,27 +100,51 @@ const MovieSearch: React.FC = () => {
             onFocus={() => results.length > 0 && setIsOpen(true)}
           />
         </label>
+        {loading && (
+          <div className="dropdown-content bg-base-200 rounded-box mt-2 w-full overflow-auto shadow-lg z-10">
+            <div className="flex justify-center items-center h-24">
+              <div className="w-12 h-12 border-b-4 border-primary rounded-full animate-spin"></div>
+            </div>
+          </div>
+        )}
         {isOpen && results.length > 0 && (
-          <div className="dropdown-content bg-base-200 rounded-box mt-1 w-full max-h-96 overflow-auto shadow-lg z-10">
-            <ul className="menu menu-compact">
+          <div className="dropdown-content bg-base-200 rounded-box mt-2 w-full overflow-auto shadow-lg z-10">
+            {loading && (
+              <div className="flex justify-center items-center h-24">
+                <div className="w-12 h-12 border-b-4 border-primary rounded-full animate-spin"></div>
+              </div>
+            )}
+            <ul className="menu menu-compact w-full">
               {results.map((movie) => (
                 <li
                   key={movie._id}
-                  className="border-b border-b-base-content/10"
+                  className="border-b border-b-base-content/10 py-2"
                   onClick={() => handleSelect(movie)}
                 >
-                  <button className="flex items-center gap-3 w-full text-left">
-                    <img
-                      src={movie.thumb_url}
+                  <Link
+                    href={`/movie/${movie.slug}`}
+                    className="flex items-center gap-3 w-full text-left"
+                  >
+                    <Image
+                      width={48}
+                      height={48}
+                      src={`https://phimimg.com/${movie.poster_url}`}
                       alt={movie.name}
-                      className="w-12 h-12 object-cover rounded"
+                      priority
+                      className="w-12 object-cover rounded"
                     />
                     <div>
-                      <p className="font-medium">{movie.name}</p>
-                      <p className="text-sm opacity-70">{movie.origin_name}</p>
-                      <p className="text-xs opacity-50">{movie.year} • </p>
+                      <span className="font-medium line-clamp-1">
+                        {movie.name}
+                      </span>
+                      <span className="text-sm opacity-70 line-clamp-1">
+                        {movie.origin_name}
+                      </span>
+                      <span className="text-xs opacity-50">
+                        {movie.year} • {movie.country?.[0]?.name} • {movie.time}
+                      </span>
                     </div>
-                  </button>
+                  </Link>
                 </li>
               ))}
             </ul>

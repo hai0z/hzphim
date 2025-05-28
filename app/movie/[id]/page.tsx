@@ -6,6 +6,7 @@ import { Play, Star, Calendar, Clock, ChevronRight } from "lucide-react";
 import MovieDetailClient from "@/app/movie/_components/MovieDetailClient";
 import TiltCard from "../_components/TiltCard";
 import { BiHeart } from "react-icons/bi";
+import { defaultPoster } from "@/constants";
 
 type Props = {
   params: Promise<{
@@ -45,13 +46,13 @@ export default async function MovieDetailEnhanced({ params }: Props) {
       <div className="h-screen overflow-hidden">
         <div className="image-container">
           <Image
-            src={movie.thumb_url}
+            src={movie.thumb_url || defaultPoster}
             alt={movie.name}
             width={1920}
             height={720}
             className="object-cover "
             priority
-            quality={30}
+            quality={10}
           />
         </div>
         <div className="absolute inset-0 bg-gradient-to-t from-base-100 via-black/50 to-transparent " />
@@ -69,7 +70,7 @@ export default async function MovieDetailEnhanced({ params }: Props) {
                 <TiltCard>
                   <div className="relative group">
                     <Image
-                      src={movie.poster_url}
+                      src={movie.poster_url || defaultPoster}
                       alt={movie.name}
                       width={300}
                       height={450}

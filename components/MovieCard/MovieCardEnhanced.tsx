@@ -15,6 +15,7 @@ import {
   Bookmark,
   Share2,
 } from "lucide-react";
+import { defaultPoster } from "@/constants";
 
 interface MovieCardEnhancedProps {
   m: Item;
@@ -149,7 +150,7 @@ function MovieCardEnhanced({
           <Image
             width={variant === "detailed" ? 280 : 220}
             height={variant === "detailed" ? 373 : 330}
-            src={`https://phimimg.com/${m.poster_url}`}
+            src={`https://phimimg.com/${m.poster_url}` || defaultPoster}
             alt={m.name}
             loading="lazy"
             quality={80}

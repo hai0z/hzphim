@@ -103,16 +103,20 @@ const Header = () => {
         >
           HZPhim
         </Link>
+        <div className="w-full ml-4">
+          <MovieSearch />
+        </div>
       </div>
 
       <div className="navbar-center hidden lg:flex ">
-        <ul className="menu menu-horizontal px-1">
+        <ul className="menu menu-horizontal ml-4">
           <li>
             <Link href="/">Trang chủ</Link>
           </li>
           <li>
-            <Link href="/phim-moi">Phim mới</Link>
+            <Link href="/phim-le">Phim lẻ</Link>
           </li>
+
           <li>
             <button
               popoverTarget="popover-1"
@@ -144,6 +148,13 @@ const Header = () => {
             </ul>
           </li>
           <li>
+            <Link href="/hoat-hinh">Phim hoạt hình</Link>
+          </li>
+          <li>
+            <Link href="/phim-bo">Phim bộ</Link>
+          </li>
+
+          <li>
             <button
               popoverTarget="popover-2"
               style={{ anchorName: "--anchor-2" } as React.CSSProperties}
@@ -173,18 +184,10 @@ const Header = () => {
                 })}
             </ul>
           </li>
-          <li>
-            <Link href="/phim-bo">Phim bộ</Link>
-          </li>
-          <li>
-            <Link href="/phim-le">Phim lẻ</Link>
-          </li>
         </ul>
       </div>
 
-      <div className="navbar-end ">
-        <MovieSearch />
-      </div>
+      <div className="navbar-end "></div>
     </div>
   );
 };

@@ -1,4 +1,3 @@
-
 import { Episode } from "@/type/MovieDetailRespone";
 import { Play } from "lucide-react";
 import Link from "next/link";
@@ -23,7 +22,7 @@ const ListEpisodes: React.FC<IProps> = ({ episodes, slug, ver, ep }) => {
           <div className="lg:flex lg:flex-wrap lg:flex-row gap-4 py-4 grid grid-cols-3 md:grid-cols-6">
             {episode.server_data.map((link, i) => (
               <Link
-                key={link.slug}
+                key={i}
                 className={`btn btn-sm md:btn-md w-24 md:w-28 ${
                   +ver! === index && +ep! === i + 1
                     ? "btn-primary"
