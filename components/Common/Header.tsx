@@ -3,6 +3,10 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePlayer } from "@/hooks/useStores";
+import theLoai from "@/constants/theloai.json";
+import quocGia from "@/constants/quocgia.json";
+import { ChevronDown } from "lucide-react";
+import MovieSearch from "./SearchInput";
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -93,38 +97,15 @@ const Header = () => {
             </li>
           </ul>
         </div>
-        <Link href="/" className="text-3xl ml-6 font-black">
+        <Link
+          href="/"
+          className="md:text-2xl lg:text-3xl text-lg ml-6 font-black"
+        >
           HZPhim
         </Link>
-        <form onSubmit={handleSearch} className="form-control ml-6">
-          <div className="join">
-            <input
-              type="text"
-              placeholder="Tìm kiếm phim..."
-              className="input input-bordered join-item input-sm"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <button type="submit" className="btn btn-primary join-item btn-sm">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                />
-              </svg>
-            </button>
-          </div>
-        </form>
       </div>
-      <div className="navbar-center hidden lg:flex">
+
+      <div className="navbar-center hidden lg:flex ">
         <ul className="menu menu-horizontal px-1">
           <li>
             <Link href="/">Trang chủ</Link>
@@ -133,46 +114,77 @@ const Header = () => {
             <Link href="/phim-moi">Phim mới</Link>
           </li>
           <li>
-            <details>
-              <summary>Thể loại</summary>
-              <ul className="p-2 bg-base-100 rounded-box">
-                <li>
-                  <Link href="/the-loai/hanh-dong">Hành động</Link>
-                </li>
-                <li>
-                  <Link href="/the-loai/tinh-cam">Tình cảm</Link>
-                </li>
-                <li>
-                  <Link href="/the-loai/hai-huoc">Hài hước</Link>
-                </li>
-              </ul>
-            </details>
+            <button
+              popoverTarget="popover-1"
+              style={{ anchorName: "--anchor-1" } as React.CSSProperties}
+            >
+              Thể loại <ChevronDown size={18} />
+            </button>
+
+            <ul
+              className="dropdown w-96 rounded-box bg-base-100 opacity-95 mt-2 backdrop-blur-sm shadow-sm grid grid-cols-3 dropdown-bottom p-4  "
+              popover="auto"
+              id="popover-1"
+              style={{ positionAnchor: "--anchor-1" } as React.CSSProperties}
+            >
+              {theLoai
+                .filter((item) => item.slug != "tat-ca")
+                .map((item) => {
+                  return (
+                    <li
+                      key={item._id}
+                      onClick={() => {
+                        document.getElementById("popover-1")?.hidePopover();
+                      }}
+                    >
+                      <Link href={`/the-loai/${item.slug}`}>{item.name}</Link>
+                    </li>
+                  );
+                })}
+            </ul>
           </li>
           <li>
-            <details>
-              <summary>Quốc gia</summary>
-              <ul className="p-2 bg-base-100 rounded-box">
-                <li>
-                  <Link href="/the-loai/hanh-dong">Hành động</Link>
-                </li>
-                <li>
-                  <Link href="/the-loai/tinh-cam">Tình cảm</Link>
-                </li>
-                <li>
-                  <Link href="/the-loai/hai-huoc">Hài hước</Link>
-                </li>
-              </ul>
-            </details>
+            <button
+              popoverTarget="popover-2"
+              style={{ anchorName: "--anchor-2" } as React.CSSProperties}
+            >
+              Quốc gia <ChevronDown size={18} />
+            </button>
+
+            <ul
+              className="dropdown w-96 rounded-box bg-base-100 opacity-95 mt-2 backdrop-blur-sm shadow-sm grid grid-cols-3 dropdown-bottom p-4 "
+              popover="auto"
+              id="popover-2"
+              style={{ positionAnchor: "--anchor-2" } as React.CSSProperties}
+            >
+              {quocGia
+                .filter((item) => item.slug != "tat-ca")
+                .map((item) => {
+                  return (
+                    <li
+                      key={item._id}
+                      onClick={() => {
+                        document.getElementById("popover-2")?.hidePopover();
+                      }}
+                    >
+                      <Link href={`/quoc-gia/${item.slug}`}>{item.name}</Link>
+                    </li>
+                  );
+                })}
+            </ul>
           </li>
           <li>
-            <Link href="/the-loai/phim-bo">Phim bộ</Link>
+            <Link href="/phim-bo">Phim bộ</Link>
           </li>
           <li>
-            <Link href="/the-loai/phim-le">Phim lẻ</Link>
+            <Link href="/phim-le">Phim lẻ</Link>
           </li>
         </ul>
       </div>
-      <div className="navbar-end"></div>
+
+      <div className="navbar-end ">
+        <MovieSearch />
+      </div>
     </div>
   );
 };

@@ -6,7 +6,7 @@ import "swiper/css/navigation";
 import { Item } from "@/type/ListMovieRespone";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
-import MovieCardEnhanced from "../MovieCardEnhanced";
+import MovieCardEnhanced from "../MovieCard/MovieCardEnhanced";
 interface IMovieSectionSwiperProps {
   data: Item[];
   title?: string;
@@ -19,10 +19,12 @@ const MovieSectionSwiper: React.FC<IMovieSectionSwiperProps> = ({
   href,
 }) => {
   return (
-    <div className="px-4">
+    <div className="md:px-4">
       <div className="flex flex-row items-center gap-x-4 my-4">
         {title && (
-          <h2 className="text-2xl font-semibold text-base-content">{title}</h2>
+          <h2 className="text-2xl font-semibold text-base-content px-2 md:px-0">
+            {title}
+          </h2>
         )}
         <Link
           href={href}
@@ -37,18 +39,17 @@ const MovieSectionSwiper: React.FC<IMovieSectionSwiperProps> = ({
       <Swiper
         pagination={{ clickable: true }}
         slidesPerView={"auto"}
-        spaceBetween={24}
+        spaceBetween={4}
       >
         {data?.map((movie, index) => (
           <SwiperSlide
             key={movie._id}
             style={{
-              width: "clamp(220px,16vw,220px)",
-              justifyContent: "center",
               paddingLeft: 4,
+              width: "auto",
             }}
           >
-            <MovieCardEnhanced m={movie} index={index} variant="default" />
+            <MovieCardEnhanced m={movie} index={index} />
           </SwiperSlide>
         ))}
       </Swiper>

@@ -55,5 +55,66 @@ const getListMovieByType = async (
   );
   return response.json();
 };
+const getListMovieByCategory = async (
+  params: MovieListParams
+): Promise<{
+  data: {
+    items: Item[];
+  };
+}> => {
+  const queryParams = new URLSearchParams();
 
-export { getNewReleaseMovie, getMovieDetail, getListMovieByType };
+  if (params.page) queryParams.append("page", params.page.toString());
+  if (params.sort_field) queryParams.append("sort_field", params.sort_field);
+  if (params.sort_type) queryParams.append("sort_type", params.sort_type);
+  if (params.sort_lang) queryParams.append("sort_lang", params.sort_lang);
+  if (params.country) queryParams.append("country", params.country);
+  if (params.year) queryParams.append("year", params.year.toString());
+  if (params.limit) queryParams.append("limit", params.limit.toString());
+
+  const response = await fetch(
+    `${APIURL}/v1/api/the-loai/${params.type_list}?${queryParams.toString()}`,
+    {
+      cache: "force-cache",
+      next: {
+        revalidate: 10,
+      },
+    }
+  );
+  return response.json();
+};
+const getListMovieByCountry = async (
+  params: MovieListParams
+): Promise<{
+  data: {
+    items: Item[];
+  };
+}> => {
+  const queryParams = new URLSearchParams();
+
+  if (params.page) queryParams.append("page", params.page.toString());
+  if (params.sort_field) queryParams.append("sort_field", params.sort_field);
+  if (params.sort_type) queryParams.append("sort_type", params.sort_type);
+  if (params.sort_lang) queryParams.append("sort_lang", params.sort_lang);
+  if (params.year) queryParams.append("year", params.year.toString());
+  if (params.limit) queryParams.append("limit", params.limit.toString());
+
+  const response = await fetch(
+    `${APIURL}/v1/api/quoc-gia/${params.type_list}?${queryParams.toString()}`,
+    {
+      cache: "force-cache",
+      next: {
+        revalidate: 10,
+      },
+    }
+  );
+  return response.json();
+};
+
+export {
+  getNewReleaseMovie,
+  getMovieDetail,
+  getListMovieByType,
+  getListMovieByCategory,
+  getListMovieByCountry,
+};

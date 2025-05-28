@@ -33,7 +33,7 @@ function MovieCardEnhanced({
   index = 0,
   variant = "default",
   showActions = true,
-  showRating = true,
+  showRating = false,
   showInfo = true,
   onAddToFavorites,
   onAddToWatchlist,
@@ -67,7 +67,7 @@ function MovieCardEnhanced({
       case "grid":
         return "w-full max-w-[240px]";
       default:
-        return "w-[clamp(200px,16vw,220px)]";
+        return "md:w-[clamp(200px,16vw,220px)] w-[calc(100vw/2.75)]";
     }
   };
 
@@ -172,7 +172,7 @@ function MovieCardEnhanced({
                 rotate: isHovered ? 360 : 0,
               }}
               transition={{ duration: 0.5, ease: "easeOut" }}
-              className="bg-primary/95 backdrop-blur-sm rounded-full p-4 shadow-2xl"
+              className="bg-primary/95 backdrop-blur-sm rounded-full p-3 shadow-2xl"
             >
               <Play className="w-8 h-8 text-white fill-current" />
             </motion.div>
@@ -318,9 +318,6 @@ function MovieCardEnhanced({
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Hover effect overlay */}
-      <div className="absolute inset-0 ring-2 ring-primary ring-opacity-0 group-hover:ring-opacity-60 transition-all duration-300 rounded-xl pointer-events-none" />
     </motion.div>
   );
 }

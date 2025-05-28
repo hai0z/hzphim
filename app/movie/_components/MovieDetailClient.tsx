@@ -15,7 +15,7 @@ import {
   Grid3X3,
   List,
 } from "lucide-react";
-import ListEpisodes from "@/components/ListEpisodes";
+import ListEpisodes from "@/components/Shared/ListEpisodes";
 import tmdb from "@/service/TMDB";
 
 interface MovieDetailClientProps {
@@ -166,7 +166,7 @@ const MovieDetailClient: React.FC<MovieDetailClientProps> = ({
               {data.movie.type === "single" ? (
                 <div>
                   <p className="pb-6 text-2xl font-semibold">Các bản chiếu</p>
-                  <div className="relative w-96 h-48 flex flex-row justify-between hover:-translate-y-2 transition-transform duration-150 border-primary rounded-xl border-2">
+                  <div className="relative w-96 h-48 flex flex-row justify-between hover:-translate-y-2 transition-transform duration-150 rounded-xl">
                     <div className="flex-3 bg-[#5e6070] rounded-tl-xl rounded-bl-xl">
                       <div className="flex flex-col items-start justify-evenly gap-4 px-4  h-full">
                         <p>{data.episodes[0].server_name}</p>
@@ -177,7 +177,7 @@ const MovieDetailClient: React.FC<MovieDetailClientProps> = ({
                               href={"/watch/" + movie.slug}
                               className="btn btn-secondary"
                             >
-                              Đang xem
+                              Xem bản này
                             </Link>
                           </div>
                         </div>

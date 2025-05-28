@@ -59,7 +59,7 @@ const WatchedMovieCard: React.FC<WatchedMovieCardProps> = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1 }}
-      className="group relative bg-base-200 rounded-lg overflow-hidden hover:shadow-xl transition-all duration-300 w-[220px]"
+      className="group relative bg-base-200 rounded-lg overflow-hidden hover:shadow-xl transition-all duration-300 md:w-[220px] w-[calc(100vw/2.75)]"
     >
       {/* Remove button */}
       {showRemoveButton && onRemove && (
@@ -112,7 +112,7 @@ const WatchedMovieCard: React.FC<WatchedMovieCardProps> = ({
 
           {/* Top badges */}
           <div className="absolute top-2 left-2 flex flex-col gap-1">
-            <div className="badge badge-neutral badge-sm">
+            <div className="badge badge-secondary badge-sm">
               {getEpisodeInfo()}
             </div>
           </div>
@@ -170,19 +170,9 @@ const WatchedMovieCard: React.FC<WatchedMovieCardProps> = ({
               <Film className="w-3 h-3" />
               <span>{item.movie.time}</span>
             </div>
-
-            {item.movie.tmdb?.vote_average && (
-              <div className="flex items-center gap-1 text-xs text-warning">
-                <Star className="w-3 h-3 fill-current" />
-                <span>{item.movie.tmdb.vote_average.toFixed(1)}</span>
-              </div>
-            )}
           </div>
         </div>
       </Link>
-
-      {/* Hover effect overlay */}
-      <div className="absolute inset-0 ring-2 ring-primary ring-opacity-0 group-hover:ring-opacity-50 transition-all duration-300 rounded-lg pointer-events-none" />
     </motion.div>
   );
 };

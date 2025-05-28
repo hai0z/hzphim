@@ -1,6 +1,16 @@
 .theater-mode {
   background-color: black;
 }
-.theater-mode > *:not(#player) {
+.theater-mode * {
   visibility: hidden;
+}
+
+.theater-mode #player,
+.theater-mode #player * {
+  visibility: visible;
+}
+
+.theater-mode #action-button,
+.theater-mode #action-button * {
+  visibility: visible;
 }

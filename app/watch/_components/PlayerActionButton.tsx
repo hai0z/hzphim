@@ -17,29 +17,29 @@ const PlayerActionButton = ({ data }: IProps) => {
 
   return (
     <div
-      className={` group w-full h-10 flex flex-row items-center py-8 bg-base-300 rounded-b-lg gap-x-8 px-2 ${
+      className={` group h-10 flex flex-row items-center py-8 bg-base-300 md:rounded-b-2xl gap-x-8 px-2 ${
         theaterMode ? "bg-black" : ""
       }`}
     >
       <div
-        className={`flex flex-row items-center gap-x-2 p-2 hover:bg-base-100 cursor-pointer rounded-lg ${
-          theaterMode ? "invisible" : ""
+        className={`flex flex-row items-center gap-x-2 p-2 hover:bg-base-100 cursor-pointer rounded-lg  ${
+          theaterMode ? "invisible!" : ""
         }`}
       >
-        <Heart />
-        Yêu thích
+        <Heart className={` ${theaterMode ? "hidden!" : ""} `} />
+        <span className="hidden md:block">Yêu thích</span>
       </div>
       <div
-        className={`flex flex-row items-center gap-x-2 p-2 hover:bg-base-100 cursor-pointer rounded-lg ${
-          theaterMode ? "invisible" : ""
+        className={`flex  flex-row items-center gap-x-2 p-2 hover:bg-base-100 cursor-pointer rounded-lg ${
+          theaterMode ? "invisible!" : ""
         }`}
       >
-        <Plus />
-        Thêm vào
+        <Plus className={` ${theaterMode ? "hidden" : ""}`} />
+        <span className="hidden md:block">Thêm vào</span>
       </div>
       <div
         onClick={handleChangeTheaterMode}
-        className={`flex flex-row items-center gap-x-2 p-2 hover:bg-base-200 cursor-pointer rounded-lg ${
+        className={`  hidden md:flex flex-row items-center gap-x-2 p-2 hover:bg-base-200 cursor-pointer rounded-lg ${
           theaterMode ? "opacity-0 bg-base-100" : ""
         } group-hover:opacity-100`}
       >

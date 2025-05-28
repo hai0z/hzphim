@@ -15,7 +15,7 @@ export type SortType = "desc" | "asc";
 export type SortLang = "vietsub" | "thuyet-minh" | "long-tieng";
 
 export interface MovieListParams {
-  type_list: TypeList;
+  type_list?: TypeList | string;
   page?: number;
   sort_field?: SortField;
   sort_type?: SortType;

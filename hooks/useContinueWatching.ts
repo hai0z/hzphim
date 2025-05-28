@@ -24,40 +24,30 @@ export const useContinueWatching = ({
   const [continueData, setContinueData] = useState<ContinueWatching | null>(
     null
   );
-  const [hasChecked, setHasChecked] = useState(false);
 
-  // Check if there's continue watching data for this movie
   const checkContinueWatching = useCallback(() => {
-    if (!movieData?.movie?._id || hasChecked) return;
+    if (!movieData?.movie?._id) return;
 
     const existingData = continueWatching.find(
       (item) => item.movie._id === movieData.movie._id
     );
 
+    console.log(existingData);
     if (existingData) {
-      // Check if it's the same episode and version
       if (
-        existingData.ep === currentEpisode &&
-        existingData.ver === currentVersion
+        existingData.ep == currentEpisode &&
+        existingData.ver == currentVersion
       ) {
-        const progressPercentage =
-          (existingData.timestamp / existingData.duration) * 100;
-        if (progressPercentage > 5 && progressPercentage < 90) {
-          setContinueData(existingData);
-          setShowModal(true);
-        }
+        setContinueData(existingData);
+        setShowModal(true);
       }
     }
+  }, [movieData, currentEpisode, currentVersion, continueWatching]);
 
-    setHasChecked(true);
-  }, [movieData, currentEpisode, currentVersion, continueWatching, hasChecked]);
-
-  // Save continue watching data
   const saveContinueWatching = useCallback(
     (timestamp: number, duration: number) => {
       if (!movieData?.movie) return;
 
-      // Only save if watched more than 30 seconds and less than 90% of the movie
       const progressPercentage = (timestamp / duration) * 100;
       if (timestamp > 30 && progressPercentage < 90) {
         addContinueWatching(movieData, {
@@ -71,7 +61,6 @@ export const useContinueWatching = ({
     [movieData, currentEpisode, currentVersion, addContinueWatching]
   );
 
-  // Handle continue watching
   const handleContinue = useCallback(() => {
     if (continueData && onSeekTo) {
       onSeekTo(continueData.timestamp);
@@ -87,14 +76,11 @@ export const useContinueWatching = ({
     setShowModal(false);
   }, [continueData, removeContinueWatching]);
 
-  // Handle close modal
   const handleCloseModal = useCallback(() => {
     setShowModal(false);
   }, []);
 
-  // Reset when movie changes
   useEffect(() => {
-    setHasChecked(false);
     setShowModal(false);
     setContinueData(null);
   }, [movieData?.movie?._id, currentEpisode, currentVersion]);
@@ -146,8 +132,6 @@ export const useContinueWatchingList = () => {
       cutoffDate.setDate(cutoffDate.getDate() - daysOld);
 
       continueWatching.forEach((item) => {
-        // Note: We need to add a timestamp field to ContinueWatching type
-        // For now, we'll just remove items that are completed (>90%)
         const progressPercentage = getWatchProgress(
           item.timestamp,
           item.duration
@@ -161,7 +145,7 @@ export const useContinueWatchingList = () => {
   );
 
   const getRecentItems = useCallback(
-    (limit: number = 20) => {
+    (limit: number = 999) => {
       return continueWatching
         .filter((item) => {
           const progressPercentage = getWatchProgress(

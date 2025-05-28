@@ -1,8 +1,9 @@
 "use client";
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { WatchedMoviesSwiper, WatchHistorySwiper } from "@/components/Swiper";
 import { Eye, Clock, TrendingUp, Star } from "lucide-react";
+import WatchedMoviesSwiper from "@/components/Swiper/WatchedMoviesSwiper";
+import WatchHistorySwiper from "@/components/Swiper/WatchHistorySwiper";
 
 const WatchHistoryDemo = () => {
   const [activeTab, setActiveTab] = useState<"simple" | "advanced">("simple");

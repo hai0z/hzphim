@@ -25,7 +25,7 @@ import {
   Play,
   Pause,
 } from "lucide-react";
-import WatchedMovieCard from "./WatchedMovieCard";
+import WatchedMovieCard from "../MovieCard/WatchedMovieCard";
 import { useContinueWatchingList } from "@/hooks/useContinueWatching";
 import { motion, AnimatePresence } from "framer-motion";
 

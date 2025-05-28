@@ -1,3 +1,4 @@
+
 import { Episode } from "@/type/MovieDetailRespone";
 import { Play } from "lucide-react";
 import Link from "next/link";
@@ -11,6 +12,7 @@ interface IProps {
 }
 
 const ListEpisodes: React.FC<IProps> = ({ episodes, slug, ver, ep }) => {
+  console.log(ver, ep);
   return (
     <div>
       {episodes.map((episode, index) => (
@@ -22,7 +24,7 @@ const ListEpisodes: React.FC<IProps> = ({ episodes, slug, ver, ep }) => {
             {episode.server_data.map((link, i) => (
               <Link
                 key={link.slug}
-                className={`btn btn-sm md:btn-md w-28 ${
+                className={`btn btn-sm md:btn-md w-24 md:w-28 ${
                   +ver! === index && +ep! === i + 1
                     ? "btn-primary"
                     : "btn-neutral"

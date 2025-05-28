@@ -1,13 +1,27 @@
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Play,
+  Star,
+  Calendar,
+  Clock,
+  Film,
+  Users,
+  Info,
+  Bookmark,
+  Heart,
+  Share2,
+} from "lucide-react";
 import React from "react";
 import Link from "next/link";
 import { getMovieDetail } from "@/service/KKPhimService";
 import tmdb from "@/service/TMDB";
 import Player from "../_components/Player";
 import Image from "next/image";
-import ListEpisodes from "@/components/ListEpisodes";
+import ListEpisodes from "@/components/Shared/ListEpisodes";
 import PlayerActionButton from "@/app/watch/_components/PlayerActionButton";
 import TheaterModeWraper from "@/app/watch/_components/TheaterModeWraper";
+
 interface IProps {
   params: Promise<{
     slug: string;
@@ -17,11 +31,18 @@ interface IProps {
     ep: string | undefined;
   }>;
 }
-const Page: React.FC<IProps> = async ({ params, searchParams }) => {
+export async function generateMetadata({ params }: IProps) {
   const slug = (await params).slug;
+  const data = await getMovieDetail(slug);
+  return {
+    title: data.movie.name,
+    description: data.movie.content.replace(/<[^>]*>/g, ""),
+  };
+}
 
+const PageEnhanced: React.FC<IProps> = async ({ params, searchParams }) => {
+  const slug = (await params).slug;
   let ep = (await searchParams).ep || 1;
-
   let ver = (await searchParams).ver || 0;
 
   const data = await getMovieDetail(slug);
@@ -53,109 +74,151 @@ const Page: React.FC<IProps> = async ({ params, searchParams }) => {
   }
 
   return (
-    <TheaterModeWraper className="min-h-screen pt-20 px-6 pb-20">
-      <div className="flex flex-row items-center gap-x-4">
-        <Link
-          href={`/movie/${movie.slug}`}
-          className="btn btn-circle btn-outline btn-sm ml-4"
-        >
-          <ChevronLeft />
-        </Link>
-        <p className="text-lg font-semibold">{movie.name}</p>
+    <TheaterModeWraper className="min-h-screen bg-base-100">
+      {/* Header Navigation */}
+      <div className="navbar bg-base-100 md:px-6 pt-20">
+        <div className="navbar-start">
+          <Link
+            href={`/movie/${movie.slug}`}
+            className="btn btn-outline btn-circle btn-sm md:btn-md"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </Link>
+        </div>
+
+        <div className="navbar-center">
+          <div className="flex flex-col items-center">
+            <h1 className="text-xl font-bold line-clamp-1">{movie.name}</h1>
+            <p className="text-sm text-base-content/70 line-clamp-1">
+              {movie.origin_name}
+            </p>
+          </div>
+        </div>
+
+        <div className="navbar-end"></div>
       </div>
-      <div className="w-full mt-8" id="player">
-        <Player link={link} key={link} data={data} ver={ver} ep={ep} />
-      </div>
-      <div id="player">
-        <PlayerActionButton data={data} />
-      </div>
-      <div>
-        <div className="flex flex-row w-full">
-          <div className="flex-2 py-4 px-3">
-            <div className="flex flex-row">
-              <div className="flex flex-row w-full">
-                <div>
-                  <Image
-                    src={movie.poster_url}
-                    alt={movie.name}
-                    width={90}
-                    height={120}
-                    className="rounded-lg object-cover"
-                    priority
-                  />
-                </div>
-                <div className="ml-6">
-                  <p className="text-xl font-semibold">{movie.name}</p>
-                  <p className="text-primary text-sm mt-6">
-                    {movie.origin_name}
-                  </p>
-                  <div className="flex flex-row gap-x-2 mt-6">
-                    <div className="border border-primary rounded-md flex justify-center items-center p-1 ">
-                      <span className="text-xs text-primary">TMDB </span>
-                      <span className="text-xs font-semibold ml-1">
-                        {movie.tmdb.vote_average.toFixed(1)}
-                      </span>
-                    </div>
-                    <div className="bg-gradient-to-r from-secondary to-accent flex justify-center items-center p-1   rounded-md">
-                      <span className="text-xs font-semibold ">
-                        {movie.quality}
-                      </span>
-                    </div>
-                    <div className="border border-base-content flex justify-center items-center p-1  rounded-md">
-                      <span className="text-xs font-semibold ">
-                        {movie.year}
-                      </span>
-                    </div>
-                    <div className="border border-base-content flex justify-center items-center p-1  rounded-md">
-                      <span className="text-xs font-semibold ">
-                        {movie.episode_current}
-                      </span>
-                    </div>
-                    {movie.type === "single" && (
-                      <div className="border border-base-content flex justify-center items-center p-1  rounded-md">
-                        <span className="text-xs font-semibold ">
-                          {movie.time}
-                        </span>
+
+      {/* Main Content */}
+      <div className="container mx-auto md:px-6 py-8">
+        <div className="mb-8">
+          <div
+            className="bg-black md:rounded-t-2xl overflow-hidden "
+            id="player"
+          >
+            <Player link={link} key={link} data={data} ver={ver} ep={ep} />
+          </div>
+          <div id="action-button">
+            <PlayerActionButton data={data} />
+          </div>
+        </div>
+
+        {/* Movie Info & Episodes Layout */}
+        <div className="grid lg:grid-cols-3 gap-8">
+          {/* Left Column - Movie Info */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Movie Details Card */}
+            <div className="card bg-base-200">
+              <div className="card-body">
+                <div className="md:flex gap-6">
+                  {/* Movie Poster */}
+                  <div className="flex-shrink-0  flex justify-center md:justify-start ">
+                    <div className="avatar">
+                      <div className="w-32 h-48 rounded-xl">
+                        <Image
+                          src={movie.poster_url}
+                          alt={movie.name}
+                          width={128}
+                          height={192}
+                          className="object-cover"
+                          priority
+                        />
                       </div>
-                    )}
+                    </div>
                   </div>
-                  <div className="flex flex-row gap-x-2 mt-4 flex-wrap gap-y-2">
-                    {movie.category.map((cate, index) => (
+
+                  {/* Movie Info */}
+                  <div className="flex-1 space-y-4 ">
+                    <div className="flex items-center md:items-start flex-col">
+                      <h2 className="card-title text-2xl mb-2">{movie.name}</h2>
+                      <p className="text-primary text-lg">
+                        {movie.origin_name}
+                      </p>
+                    </div>
+
+                    {/* Stats */}
+                    <div className="flex flex-wrap gap-3">
+                      <div className="btn bg-base-100 rounded-lg p-3 min-w-0">
+                        <div className="stat-figure text-primary">
+                          <Star className="w-5 h-5" />
+                        </div>
+                        <div className="stat-value text-lg text-primary">
+                          {movie.tmdb.vote_average.toFixed(1)}
+                        </div>
+                      </div>
+
+                      <div className="btn bg-base-100 rounded-lg p-3 min-w-0">
+                        <div className="stat-figure text-secondary">
+                          <Calendar className="w-5 h-5" />
+                        </div>
+                        <div className="stat-value text-lg">{movie.year}</div>
+                      </div>
+
+                      <div className="btn bg-base-100 rounded-lg p-3 min-w-0">
+                        <div className="stat-figure text-accent">
+                          <Film className="w-5 h-5" />
+                        </div>
+                        <div className="stat-value text-lg text-accent">
+                          {movie.quality}
+                        </div>
+                      </div>
+
+                      {movie.type === "single" && (
+                        <div className="btn bg-base-100 rounded-lg p-3 min-w-0">
+                          <div className="stat-figure text-info">
+                            <Clock className="w-5 h-5" />
+                          </div>
+                          <div className="stat-value text-lg text-info">
+                            {movie.time}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Genres */}
+                    <div className="flex flex-wrap gap-2">
+                      {movie.category
+                        .slice(0, 6)
+                        .map((cate: any, index: number) => (
+                          <div key={index} className="badge badge-outline">
+                            {cate.name}
+                          </div>
+                        ))}
+                    </div>
+
+                    {/* Description */}
+                    <div>
+                      <p className="text-base-content/80 line-clamp-3 leading-relaxed">
+                        {movie.content.replace(/<[^>]*>/g, "")}
+                      </p>
                       <Link
-                        href={"/"}
-                        key={index}
-                        className="badge bg-neutral hover:text-primary"
+                        href={`/movie/${movie.slug}`}
+                        className="btn btn-link btn-sm p-0 h-auto min-h-0 mt-2"
                       >
-                        <p>{cate.name}</p>
+                        Xem thêm thông tin
+                        <ChevronRight className="w-4 h-4 ml-1" />
                       </Link>
-                    ))}
+                    </div>
                   </div>
-                </div>
-              </div>
-              <div className="w-full">
-                <div>
-                  <p className="text-justify text-[14px] line-clamp-4">
-                    {movie.content}
-                  </p>
-                  <Link
-                    href={`/movie/${movie.slug}`}
-                    className="flex flex-row gap-x-1 items-center mt-6  "
-                  >
-                    <span className="text-[14px] text-primary ">
-                      {" "}
-                      Thông tin phim
-                    </span>{" "}
-                    <ChevronRight color="var(--color-primary)" size={20} />
-                  </Link>
                 </div>
               </div>
             </div>
-            <div className="divider"></div>
-            <div>
-              {data.movie.type === "single" && (
+
+            {/* Episodes Section */}
+            <div className="card bg-base-200 p-4">
+              {data.movie.type === "single" ? (
                 <div>
                   <p className="pb-6 text-2xl font-semibold">Các bản chiếu</p>
-                  <div className="relative w-96 h-48 flex flex-row justify-between hover:-translate-y-2 transition-transform duration-150 border-primary rounded-xl border-2">
+                  <div className="relative w-96 h-48 flex flex-row justify-between hover:-translate-y-2 transition-transform duration-150 rounded-xl ring-2 ring-primary">
                     <div className="flex-3 bg-[#5e6070] rounded-tl-xl rounded-bl-xl">
                       <div className="flex flex-col items-start justify-evenly gap-4 px-4  h-full">
                         <p>{data.episodes[0].server_name}</p>
@@ -187,9 +250,7 @@ const Page: React.FC<IProps> = async ({ params, searchParams }) => {
                     </div>
                   </div>
                 </div>
-              )}
-              {(data.movie.type === "series" ||
-                data.movie.type === "hoathinh") && (
+              ) : (
                 <ListEpisodes
                   episodes={data.episodes}
                   slug={slug}
@@ -199,23 +260,96 @@ const Page: React.FC<IProps> = async ({ params, searchParams }) => {
               )}
             </div>
           </div>
-          <div className="divider-horizontal divider"></div>
-          <div className="flex-1 flex flex-col">
-            <p className="font-semibold text-lg py-4">Diễn viên</p>
-            <div className="flex flex-row gap-x-4 flex-wrap gap-y-4">
-              {crew?.cast?.map((cast) => (
-                <div key={cast.id} className="w-24">
-                  <Image
-                    src={tmdb.getImage(cast.profile_path)}
-                    alt={cast.name}
-                    className="object-cover rounded-full w-24 h-24"
-                    width={80}
-                    height={80}
-                    priority
-                  />
-                  <p className="text-[13px] text-center">{cast.name}</p>
+
+          {/* Right Column - Cast */}
+          <div className="lg:col-span-1">
+            <div className="card bg-base-200 sticky top-8">
+              <div className="card-body">
+                <h3 className="card-title mb-6 flex items-center gap-2">
+                  <Users className="w-5 h-5 text-accent" />
+                  Diễn viên ({crew?.cast?.length || 0})
+                </h3>
+
+                <div className="space-y-4 max-h-96 overflow-y-auto">
+                  {crew?.cast?.slice(0, 10).map((cast: any) => (
+                    <div
+                      key={cast.id}
+                      className="flex items-center gap-3 p-3 bg-base-100 rounded-lg hover:bg-base-300 transition-colors"
+                    >
+                      <div className="avatar">
+                        <div className="w-12 h-12 rounded-full">
+                          <Image
+                            src={tmdb.getImage(cast.profile_path)}
+                            alt={cast.name}
+                            width={48}
+                            height={48}
+                            className="object-cover"
+                          />
+                        </div>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-semibold text-sm line-clamp-1">
+                          {cast.name}
+                        </p>
+                        <p className="text-xs text-base-content/70 line-clamp-1">
+                          {cast.character}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
+
+                {crew?.cast?.length > 10 && (
+                  <Link
+                    href={`/movie/${movie.slug}`}
+                    className="btn btn-outline btn-sm mt-4"
+                  >
+                    Xem tất cả diễn viên
+                  </Link>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Additional Info */}
+        <div className="mt-8">
+          <div className="card bg-base-200">
+            <div className="card-body">
+              <h3 className="card-title mb-4 flex items-center gap-2">
+                <Info className="w-5 h-5 text-info" />
+                Thông tin bổ sung
+              </h3>
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="stat bg-base-100 rounded-lg">
+                  <div className="stat-title">Trạng thái</div>
+                  <div className="stat-value text-lg">
+                    <div className="badge badge-success">
+                      {movie.status === "completed" ? "Hoàn tất" : movie.status}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="stat bg-base-100 rounded-lg">
+                  <div className="stat-title">Loại phim</div>
+                  <div className="stat-value text-lg">
+                    {movie.type === "single" ? "Phim lẻ" : "Phim bộ"}
+                  </div>
+                </div>
+
+                <div className="stat bg-base-100 rounded-lg">
+                  <div className="stat-title">Ngôn ngữ</div>
+                  <div className="stat-value text-lg">{movie.lang}</div>
+                </div>
+
+                <div className="stat bg-base-100 rounded-lg">
+                  <div className="stat-title">Quốc gia</div>
+                  <div className="stat-value text-lg">
+                    {movie.country?.[0]?.name || "N/A"}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -224,4 +358,4 @@ const Page: React.FC<IProps> = async ({ params, searchParams }) => {
   );
 };
 
-export default Page;
+export default PageEnhanced;

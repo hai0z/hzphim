@@ -7,7 +7,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import Link from "next/link";
 import { ChevronRight, History, Trash2 } from "lucide-react";
-import WatchedMovieCard from "@/components/Swiper/WatchedMovieCard";
+import WatchedMovieCard from "@/components/MovieCard/WatchedMovieCard";
 import { useContinueWatchingList } from "@/hooks/useContinueWatching";
 
 interface IWatchedMoviesSwiperProps {
@@ -32,28 +32,12 @@ const WatchedMoviesSwiper: React.FC<IWatchedMoviesSwiperProps> = ({
   }
 
   return (
-    <div className="px-4 py-4">
+    <div className="md:px-4 py-4">
       <div className="flex flex-row items-center justify-between my-4">
         <div className="flex flex-row items-center gap-x-4">
-          <h2 className="text-2xl font-semibold text-base-content flex items-center gap-2">
-            <History className="w-6 h-6 text-primary" />
+          <h2 className="text-2xl font-semibold text-base-content flex items-center gap-2 px-2 md:px-0">
             {title}
           </h2>
-          <span className="badge badge-primary badge-sm">
-            {displayItems.length} phim
-          </span>
-        </div>
-
-        <div className="flex items-center gap-2">
-          {/* Clear old items button */}
-          <button
-            onClick={() => clearOldItems(7)} // Clear items older than 7 days
-            className="btn btn-ghost btn-sm text-base-content/60 hover:text-error"
-            title="Xóa phim đã xem cũ"
-          >
-            <Trash2 className="w-4 h-4" />
-          </button>
-
           {/* View all button */}
           {href && (
             <Link
@@ -80,29 +64,7 @@ const WatchedMoviesSwiper: React.FC<IWatchedMoviesSwiperProps> = ({
           dynamicBullets: true,
         }}
         slidesPerView="auto"
-        spaceBetween={16}
-        breakpoints={{
-          320: {
-            slidesPerView: 2,
-            spaceBetween: 12,
-          },
-          640: {
-            slidesPerView: 3,
-            spaceBetween: 16,
-          },
-          768: {
-            slidesPerView: 4,
-            spaceBetween: 20,
-          },
-          1024: {
-            slidesPerView: 5,
-            spaceBetween: 24,
-          },
-          1280: {
-            slidesPerView: 6,
-            spaceBetween: 24,
-          },
-        }}
+        spaceBetween={4}
         className="watched-movies-swiper"
       >
         {displayItems.map((item, index) => (
@@ -110,7 +72,7 @@ const WatchedMoviesSwiper: React.FC<IWatchedMoviesSwiperProps> = ({
             key={`${item.movie._id}-${item.ep}-${item.ver}`}
             style={{
               width: "auto",
-              minWidth: "100px",
+              paddingLeft: 4,
             }}
           >
             <WatchedMovieCard

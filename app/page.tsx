@@ -1,6 +1,6 @@
-import { WatchedMoviesSwiper, WatchHistorySwiper } from "@/components/Swiper";
 import HomeSwiper from "@/components/Swiper/HomeSwiper";
 import MovieSectionSwiper from "@/components/Swiper/MovieSectionSwiper";
+import WatchedMoviesSwiper from "@/components/Swiper/WatchedMoviesSwiper";
 import {
   getListMovieByType,
   getMovieDetail,
@@ -50,35 +50,35 @@ const Page = async () => {
           listOverView={overviews}
         />
       </div>
-      <div className="px-6">
+      <div className="md:px-6">
         <WatchedMoviesSwiper
-          title="Lịch sử xem phim"
+          title="Tiếp tục xem"
           href="/history"
           maxItems={20}
         />
       </div>
-      <div className="px-6">
+      <div className="md:px-6">
         <MovieSectionSwiper
           href="/the-loai/phim-le"
           data={singleMovie?.data?.items || []}
           title="Phim lẻ"
         />
       </div>
-      <div className="px-6 mt-8">
+      <div className="md:px-6 mt-8">
         <MovieSectionSwiper
           href="/the-loai/phim-bo"
           data={tvSeries?.data?.items || []}
           title="Phim bộ"
         />
       </div>
-      <div className="px-6 mt-8">
+      <div className="md:px-6 mt-8">
         <MovieSectionSwiper
           href="/the-loai/hoat-hinh"
           data={animation?.data?.items || []}
           title="Phim hoạt hình"
         />
       </div>
-      <div className="px-6 mt-8">
+      <div className="md:px-6 mt-8">
         <MovieSectionSwiper
           href="/the-loai/phim-bo-han-quoc"
           data={koreaTvSeries?.data?.items || []}
