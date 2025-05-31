@@ -21,6 +21,7 @@ import Image from "next/image";
 import ListEpisodes from "@/components/Shared/ListEpisodes";
 import PlayerActionButton from "@/app/watch/_components/PlayerActionButton";
 import TheaterModeWraper from "@/app/watch/_components/TheaterModeWraper";
+import CustomVideoPlayer from "../_components/CustomVideoPlayer";
 
 interface IProps {
   params: Promise<{
@@ -218,7 +219,7 @@ const PageEnhanced: React.FC<IProps> = async ({ params, searchParams }) => {
               {data.movie.type === "single" ? (
                 <div>
                   <p className="pb-6 text-2xl font-semibold">Các bản chiếu</p>
-                  <div className="relative w-96 h-48 flex flex-row justify-between hover:-translate-y-2 transition-transform duration-150 rounded-xl ring-2 ring-primary">
+                  <div className="relative w-full sm:w-96  h-48 flex flex-row justify-between hover:-translate-y-2 transition-transform duration-150 rounded-xl ring-2 ring-primary">
                     <div className="flex-3 bg-[#5e6070] rounded-tl-xl rounded-bl-xl">
                       <div className="flex flex-col items-start justify-evenly gap-4 px-4  h-full">
                         <p>{data.episodes[0].server_name}</p>

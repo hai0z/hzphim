@@ -1,3 +1,4 @@
+import { Item } from "@/type/ListMovieRespone";
 import { MovieDetailRespone } from "@/type/MovieDetailRespone";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
@@ -7,6 +8,7 @@ export type ContinueWatching = MovieDetailRespone & {
   duration: number;
   ep: string | number;
   ver: string | number;
+  updatedAt: Date;
 };
 
 interface IPlayerState {
@@ -27,8 +29,8 @@ interface IPlayerState {
     }
   ) => void;
 
-  listFavorite: Array<MovieDetailRespone>;
-  addFavorite: (movie: MovieDetailRespone) => void;
+  listFavorite: Array<Item>;
+  addFavorite: (movie: Item) => void;
   removeFavorite: (movieId: string) => void;
 }
 
@@ -41,17 +43,21 @@ const usePlayerStore = create<IPlayerState>()(
 
       // Continue watching
       continueWatching: [] as ContinueWatching[],
+
       addContinueWatching: (movie: MovieDetailRespone, data) => {
         const { continueWatching } = get();
         if (!continueWatching.find((m) => m.movie._id === movie.movie._id)) {
           set({
-            continueWatching: [{ ...movie, ...data }, ...continueWatching],
+            continueWatching: [
+              { ...movie, ...data, updatedAt: new Date() },
+              ...continueWatching,
+            ],
           });
         } else {
           set({
             continueWatching: continueWatching.map((m) => {
               if (m.movie._id === movie.movie._id) {
-                return { ...m, ...data };
+                return { ...m, ...data, updatedAt: new Date() };
               }
               return m;
             }),
@@ -67,17 +73,15 @@ const usePlayerStore = create<IPlayerState>()(
         set({ continueWatching: newContinueWatching });
       },
       listFavorite: [],
-      addFavorite: (movie: MovieDetailRespone) => {
+      addFavorite: (movie: Item) => {
         const { listFavorite } = get();
-        if (!listFavorite.find((m) => m.movie._id === movie.movie._id)) {
-          set({ listFavorite: [...listFavorite, movie] });
+        if (!listFavorite.find((m) => m._id == movie._id)) {
+          set({ listFavorite: [movie, ...listFavorite] });
         }
       },
       removeFavorite: (movieId: string) => {
         const { listFavorite } = get();
-        const newListFavorite = listFavorite.filter(
-          (m) => m.movie._id !== movieId
-        );
+        const newListFavorite = listFavorite.filter((m) => m._id !== movieId);
         set({ listFavorite: newListFavorite });
       },
     }),
@@ -86,6 +90,7 @@ const usePlayerStore = create<IPlayerState>()(
       partialize: (state) => ({
         theaterMode: state.theaterMode,
         continueWatching: state.continueWatching,
+        listFavorite: state.listFavorite,
       }),
     }
   )

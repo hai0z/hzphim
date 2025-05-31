@@ -5,13 +5,13 @@ const nextConfig: NextConfig = {
 
   images: {
     domains: [
-      "fakestoreapi.com",
       "image.tmdb.org",
       "themoviedb.org",
       "www.youtube.com",
       "phimimg.com",
+      "dpcpa.com",
     ],
-    unoptimized: true,
+    unoptimized: false,
   },
 
   env: {

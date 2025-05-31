@@ -98,6 +98,7 @@ export async function generateMetadata({ params }: PageProps) {
     title: `Phim ${countryMap[slug]}`,
   };
 }
+export const dynamicParams = false;
 
 const Page: React.FC<PageProps> = async ({ params, searchParams }) => {
   const slug = (await params).slug as TypeList;
@@ -116,7 +117,7 @@ const Page: React.FC<PageProps> = async ({ params, searchParams }) => {
             <div className="w-16 h-16 border-b-4 border-primary rounded-full animate-spin"></div>
           </div>
         }
-        key={slug}
+        key={JSON.stringify(searchParams)}
       >
         <ListMovie
           promise={getListMovieByCountry({

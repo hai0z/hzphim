@@ -7,6 +7,8 @@ import MovieDetailClient from "@/app/movie/_components/MovieDetailClient";
 import TiltCard from "../_components/TiltCard";
 import { BiHeart } from "react-icons/bi";
 import { defaultPoster } from "@/constants";
+import AddToFavoriteButton from "../_components/AddToFavoriteButton";
+import ParallaxImage from "../_components/ParallaxImage";
 
 type Props = {
   params: Promise<{
@@ -43,30 +45,18 @@ export default async function MovieDetailEnhanced({ params }: Props) {
 
   return (
     <div className="min-h-screen bg-base-100">
-      <div className="h-screen overflow-hidden">
-        <div className="image-container">
-          <Image
-            src={movie.thumb_url || defaultPoster}
-            alt={movie.name}
-            width={1920}
-            height={720}
-            className="object-cover "
-            priority
-            quality={10}
-          />
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-base-100 via-black/50 to-transparent " />
-        <div className="absolute inset-0 bg-gradient-to-b from-base-100  to-transparent h-1/4 " />
-
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-base-100" />
-
-        {/* Content */}
-
-        <div className="absolute inset-0 z-10 h-full flex items-end">
-          <div className="container mx-auto px-6 pb-20">
-            <div className="grid lg:grid-cols-12 gap-8 items-end">
-              {/* Poster */}
-              <div className="lg:col-span-3">
+      {/* Parallax Hero Section */}
+      <ParallaxImage
+        src={movie.thumb_url || defaultPoster}
+        alt={movie.name}
+        className="h-[75vh] sm:h-screen"
+        intensity={0.3}
+      >
+        <div className="h-full flex items-end">
+          <div className="container mx-auto px-4 sm:px-6 pb-12 sm:pb-16 lg:pb-20">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-end">
+              {/* Poster - Hidden on mobile, shown on tablet+ */}
+              <div className="hidden lg:block lg:col-span-3">
                 <TiltCard>
                   <div className="relative group">
                     <Image
@@ -74,7 +64,7 @@ export default async function MovieDetailEnhanced({ params }: Props) {
                       alt={movie.name}
                       width={300}
                       height={450}
-                      className="rounded-2xl shadow-2xl transition-transform duration-500 group-hover:scale-105"
+                      className="rounded-2xl shadow-2xl transition-transform duration-500 group-hover:scale-105 w-full max-w-[250px] lg:max-w-[300px] mx-auto"
                       priority
                     />
                   </div>
@@ -82,76 +72,91 @@ export default async function MovieDetailEnhanced({ params }: Props) {
               </div>
 
               {/* Movie Info */}
-              <div className="lg:col-span-9">
+              <div className="lg:col-span-9 text-center md:text-left">
                 {/* Title */}
-                <div className="mb-6">
-                  <h1 className="text-5xl lg:text-7xl font-black mb-4  ">
+                <div className="mb-4 sm:mb-6">
+                  <p
+                    className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black mb-2 sm:mb-4 text-base-content leading-tight"
+                    style={{
+                      textShadow:
+                        "0 0 20px rgba(0,0,0,0.8), 0 0 40px rgba(0,0,0,0.6)",
+                    }}
+                  >
                     {movie.name}
-                  </h1>
-                  <p className="text-xl lg:text-2xl font-light">
+                  </p>
+                  <p
+                    className="text-lg sm:text-xl lg:text-2xl font-light text-base-content/90"
+                    style={{
+                      textShadow:
+                        "0 0 15px rgba(0,0,0,0.8), 0 0 30px rgba(0,0,0,0.6)",
+                    }}
+                  >
                     {movie.origin_name}
                   </p>
                 </div>
 
                 {/* Rating & Stats */}
-                <div className="flex flex-wrap items-center gap-6 mb-6">
+                <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 sm:gap-4 lg:gap-6 mb-4 sm:mb-6">
                   {movie.tmdb && (
-                    <div className="flex items-center gap-2 bg-yellow-500/20 backdrop-blur-sm rounded-full px-4 py-2">
-                      <Star className="w-5 h-5 text-yellow-400 fill-current" />
-                      <span className="font-bold text-lg">
+                    <div className="flex items-center gap-2 bg-yellow-500/20 backdrop-blur-sm rounded-full px-3 sm:px-4 py-2">
+                      <Star className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400 fill-current" />
+                      <span className="font-bold text-sm sm:text-base lg:text-lg">
                         {movie.tmdb.vote_average.toFixed(1)}
                       </span>
-                      <span className="text-sm ">
+                      <span className="text-xs sm:text-sm hidden sm:inline">
                         ({movie.tmdb.vote_count.toLocaleString()})
                       </span>
                     </div>
                   )}
-                  <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2">
-                    <Calendar className="w-4 h-4" />
-                    <span>{movie.year}</span>
+                  <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-3 sm:px-4 py-2">
+                    <Calendar className="w-3 h-3 sm:w-4 sm:h-4" />
+                    <span className="text-sm sm:text-base">{movie.year}</span>
                   </div>
-                  <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2">
-                    <Clock className="w-4 h-4" />
-                    <span>{movie.time}</span>
+                  <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-3 sm:px-4 py-2">
+                    <Clock className="w-3 h-3 sm:w-4 sm:h-4" />
+                    <span className="text-sm sm:text-base">{movie.time}</span>
                   </div>
-                  <div className="badge badge-primary badge-lg">
+                  <div className="badge badge-primary badge-sm sm:badge-md lg:badge-lg">
                     {movie.quality}
                   </div>
                 </div>
 
                 {/* Genres */}
-                <div className="flex flex-wrap gap-2 mb-6">
+                <div className="flex flex-wrap justify-center md:justify-start gap-2 mb-4 sm:mb-6">
                   {movie.category?.slice(0, 4).map((cat) => (
-                    <span key={cat.id} className="badge badge-neutral badge-lg">
+                    <Link
+                      href={`/the-loai/${cat.slug}`}
+                      key={cat.id}
+                      className="badge badge-neutral badge-sm sm:badge-md lg:badge-lg"
+                    >
                       {cat.name}
-                    </span>
+                    </Link>
                   ))}
                 </div>
 
                 {/* Description */}
-                <div className="mb-8 max-w-4xl">
+                <div className="mb-6 sm:mb-8 max-w-4xl mx-auto md:mx-0">
                   <div
-                    className=" text-lg leading-relaxed line-clamp-4"
+                    className="text-sm sm:text-base lg:text-lg leading-relaxed line-clamp-3 sm:line-clamp-4 text-center md:text-left"
+                    style={{
+                      textShadow: "0 0 10px rgba(0,0,0,0.8)",
+                    }}
                     dangerouslySetInnerHTML={{ __html: movie.content }}
                   />
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex flex-wrap gap-4">
+                <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-3 sm:gap-4">
                   <Link
                     href={`/watch/${movie.slug}`}
-                    className="btn btn-primary btn-lg gap-3 shadow-2xl hover:shadow-primary/50 transition-all duration-300"
+                    className="btn btn-primary btn-sm sm:btn-md lg:btn-lg gap-2 sm:gap-3 shadow-2xl hover:shadow-primary/50 transition-all duration-300 w-full sm:w-auto"
                   >
-                    <Play className="w-6 h-6 fill-current" />
+                    <Play className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 fill-current" />
                     Xem Ngay
                   </Link>
-                  <Link
-                    href={`/watch/${movie.slug}`}
-                    className="btn btn-outline btn-lg gap-3 shadow-2xl hover:shadow-secondary/50 transition-all duration-300"
-                  >
-                    <BiHeart className="w-6 h-6 fill-current" />
-                    Thêm vào yêu thích
-                  </Link>
+                  <div className="w-full sm:w-auto">
+                    <AddToFavoriteButton movie={movie} />
+                  </div>
                 </div>
               </div>
             </div>
@@ -159,10 +164,10 @@ export default async function MovieDetailEnhanced({ params }: Props) {
         </div>
 
         {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <ChevronRight className="w-6 h-6 rotate-90" />
+        <div className="absolute bottom-0 lg:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce z-20">
+          <ChevronRight className="w-6 h-6 rotate-90 text-white drop-shadow-lg" />
         </div>
-      </div>
+      </ParallaxImage>
 
       {/* Content Sections */}
       <div className="relative z-20 bg-base-100">

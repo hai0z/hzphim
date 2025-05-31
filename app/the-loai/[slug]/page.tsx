@@ -1,4 +1,3 @@
-import MovieCardEnhanced from "@/components/MovieCard/MovieCardEnhanced";
 import FilterButton from "@/components/MovieFilter/FilterButton";
 import ListMovie from "@/components/Shared/ListMovie";
 import { getListMovieByCategory } from "@/service/KKPhimService";
@@ -78,6 +77,7 @@ export async function generateMetadata({ params }: PageProps) {
     title: `Phim ${categoryMap[slug]}`,
   };
 }
+export const dynamicParams = false;
 
 const Page: React.FC<PageProps> = async ({ params, searchParams }) => {
   const slug = (await params).slug as TypeList;
@@ -85,7 +85,7 @@ const Page: React.FC<PageProps> = async ({ params, searchParams }) => {
   return (
     <div className="min-h-screen pt-20">
       <div className="my-4 px-6">
-        <h1 className="text-3xl font-semibold my-4  ">
+        <h1 className="text-3xl font-semibold my-4">
           {categoryMap[slug] as string}
         </h1>
         <FilterButton />
@@ -96,7 +96,7 @@ const Page: React.FC<PageProps> = async ({ params, searchParams }) => {
             <div className="w-16 h-16 border-b-4 border-primary rounded-full animate-spin"></div>
           </div>
         }
-        key={slug}
+        key={JSON.stringify(searchParams)}
       >
         <ListMovie
           promise={getListMovieByCategory({

@@ -1,4 +1,4 @@
-import { Item, ListMovieRespone } from "@/type/ListMovieRespone";
+import { Item, ListMovieRespone, Pagination } from "@/type/ListMovieRespone";
 import { Movie, MovieDetailRespone } from "@/type/MovieDetailRespone";
 import { MovieListParams } from "@/type/MovieListParams";
 
@@ -31,6 +31,9 @@ const getListMovieByType = async (
 ): Promise<{
   data: {
     items: Item[];
+    params: {
+      pagination: Pagination;
+    };
   };
 }> => {
   const queryParams = new URLSearchParams();
@@ -60,6 +63,9 @@ const getListMovieByCategory = async (
 ): Promise<{
   data: {
     items: Item[];
+    params: {
+      pagination: Pagination;
+    };
   };
 }> => {
   const queryParams = new URLSearchParams();
@@ -88,6 +94,9 @@ const getListMovieByCountry = async (
 ): Promise<{
   data: {
     items: Item[];
+    params: {
+      pagination: Pagination;
+    };
   };
 }> => {
   const queryParams = new URLSearchParams();

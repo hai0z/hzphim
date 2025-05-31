@@ -42,6 +42,8 @@ export async function generateMetadata({ params }: PageProps) {
   };
 }
 
+export const dynamicParams = false;
+
 const Page: React.FC<PageProps> = async ({ params, searchParams }) => {
   const type_list = (await params).type_list as TypeList;
 
@@ -59,7 +61,7 @@ const Page: React.FC<PageProps> = async ({ params, searchParams }) => {
             <div className="w-16 h-16 border-b-4 border-primary rounded-full animate-spin"></div>
           </div>
         }
-        key={type_list}
+        key={JSON.stringify(searchParams)}
       >
         <ListMovie
           promise={getListMovieByType({

@@ -1,8 +1,10 @@
 "use client";
 import { usePlayer } from "@/hooks/useStores";
+import { usePlayerStore } from "@/store";
 import { MovieDetailRespone } from "@/type/MovieDetailRespone";
-import { Heart, Plus } from "lucide-react";
+import { Heart, Plus, X } from "lucide-react";
 import React from "react";
+import { toast } from "react-toastify";
 
 interface IProps {
   data: MovieDetailRespone;
@@ -11,8 +13,25 @@ interface IProps {
 const PlayerActionButton = ({ data }: IProps) => {
   const { theaterMode, setTheaterMode } = usePlayer();
 
+  const { listFavorite, addFavorite, removeFavorite } = usePlayerStore();
+
+  const isFavorite = listFavorite.some((item) => item._id == data.movie._id);
+
   const handleChangeTheaterMode = () => {
     setTheaterMode(!theaterMode);
+  };
+  const handleAddToFavorites = () => {
+    if (isFavorite) {
+      removeFavorite(data.movie._id);
+      toast.success("Đã xóa khỏi danh sách yêu thích", {
+        autoClose: 1000,
+      });
+    } else {
+      addFavorite(data.movie);
+      toast.success("Đã thêm vào danh sách yêu thích", {
+        autoClose: 1000,
+      });
+    }
   };
 
   return (
@@ -22,21 +41,21 @@ const PlayerActionButton = ({ data }: IProps) => {
       }`}
     >
       <div
+        onClick={handleAddToFavorites}
         className={`flex flex-row items-center gap-x-2 p-2 hover:bg-base-100 cursor-pointer rounded-lg  ${
           theaterMode ? "invisible!" : ""
         }`}
       >
-        <Heart className={` ${theaterMode ? "hidden!" : ""} `} />
-        <span className="hidden md:block">Yêu thích</span>
+        {isFavorite ? (
+          <X className={`w-5 h-5 text-error ${theaterMode ? "hidden!" : ""}`} />
+        ) : (
+          <Heart className={`w-5 h-5    ${theaterMode ? "hidden!" : ""}`} />
+        )}
+        <span className={`hidden md:block ${theaterMode ? "hidden!" : ""}`}>
+          {isFavorite ? "Bỏ yêu thích" : "Yêu thích"}
+        </span>
       </div>
-      <div
-        className={`flex  flex-row items-center gap-x-2 p-2 hover:bg-base-100 cursor-pointer rounded-lg ${
-          theaterMode ? "invisible!" : ""
-        }`}
-      >
-        <Plus className={` ${theaterMode ? "hidden" : ""}`} />
-        <span className="hidden md:block">Thêm vào</span>
-      </div>
+
       <div
         onClick={handleChangeTheaterMode}
         className={`  hidden md:flex flex-row items-center gap-x-2 p-2 hover:bg-base-200 cursor-pointer rounded-lg ${

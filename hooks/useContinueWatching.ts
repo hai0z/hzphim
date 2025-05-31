@@ -154,6 +154,11 @@ export const useContinueWatchingList = () => {
           );
           return progressPercentage > 5 && progressPercentage < 90;
         })
+        .sort((a, b) => {
+          const dateA = a.updatedAt ? new Date(a.updatedAt).getTime() : 0;
+          const dateB = b.updatedAt ? new Date(b.updatedAt).getTime() : 0;
+          return dateB - dateA;
+        })
         .slice(0, limit);
     },
     [continueWatching]

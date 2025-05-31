@@ -49,7 +49,7 @@ const MovieSectionSwiper: React.FC<IMovieSectionSwiperProps> = ({
               width: "auto",
             }}
           >
-            <MovieCardEnhanced m={movie} index={index} />
+            <MovieCardEnhanced m={movie} showRating index={index} />
           </SwiperSlide>
         ))}
       </Swiper>

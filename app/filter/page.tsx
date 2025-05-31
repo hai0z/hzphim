@@ -42,7 +42,7 @@ const Page = async ({ searchParams }: PageProps) => {
         <FilterButton />
       </div>
       <Suspense
-        key={JSON.stringify(params)}
+        key={JSON.stringify(params) + JSON.stringify(searchParams)}
         fallback={
           <div className="flex justify-center items-center h-[50vh]">
             <div className="w-16 h-16 border-b-4 border-primary rounded-full animate-spin"></div>

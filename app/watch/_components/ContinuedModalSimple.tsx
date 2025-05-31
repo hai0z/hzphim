@@ -78,9 +78,11 @@ const ContinuedModalSimple = ({
                 alt={data.movie.name}
                 width={400}
                 height={200}
+                priority
+                quality={10}
                 className="w-full h-32 object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-base-100 to-transparent h-full" />
 
               {/* Countdown Circle */}
               <div className="absolute top-4 right-4">

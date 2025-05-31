@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
-import { Roboto_Serif } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Common/Header";
+import { ThemeProvider } from "next-themes";
 import NextTopLoader from "nextjs-toploader";
-const roboto_Serif = Roboto_Serif({
-  variable: "--font-roboto-serif",
+import ToastProvider from "@/provider/ToastProvider";
+import Header from "@/components/Common/Header";
+import Footer from "@/components/Common/Footer";
+const roboto_Serif = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
@@ -19,11 +22,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-theme="dracula" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <body className={`${roboto_Serif.variable} antialiased`}>
-        <NextTopLoader showSpinner={false} color="var(--color-primary)" />
-        <Header />
-        <main>{children}</main>
+        <ThemeProvider attribute="data-theme" defaultTheme="dark">
+          <NextTopLoader showSpinner={false} color="var(--color-primary)" />
+          <Header />
+          <ToastProvider>{children}</ToastProvider>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );

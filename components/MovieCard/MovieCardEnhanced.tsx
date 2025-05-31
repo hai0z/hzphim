@@ -14,8 +14,11 @@ import {
   Info,
   Bookmark,
   Share2,
+  HeartMinus,
+  X,
 } from "lucide-react";
 import { defaultPoster } from "@/constants";
+import usePlayerStore from "@/store/playerStore";
 
 interface MovieCardEnhancedProps {
   m: Item;
@@ -25,8 +28,6 @@ interface MovieCardEnhancedProps {
   showRating?: boolean;
   showInfo?: boolean;
   onAddToFavorites?: (movieId: string) => void;
-  onAddToWatchlist?: (movieId: string) => void;
-  onShare?: (movie: Item) => void;
 }
 
 function MovieCardEnhanced({
@@ -37,12 +38,22 @@ function MovieCardEnhanced({
   showRating = false,
   showInfo = true,
   onAddToFavorites,
-  onAddToWatchlist,
-  onShare,
 }: MovieCardEnhancedProps) {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [showQuickInfo, setShowQuickInfo] = useState(false);
+
+  const listFavorite = usePlayerStore((state) => state.listFavorite);
+
+  const isFavorite = listFavorite.some((item) => item._id == m._id);
+
+  const handleAddToFavorites = () => {
+    if (isFavorite) {
+      usePlayerStore.getState().removeFavorite(m._id);
+    } else {
+      usePlayerStore.getState().addFavorite(m);
+    }
+  };
 
   const getRatingColor = () => {
     const rating = m.tmdb?.vote_average || 0;
@@ -58,17 +69,16 @@ function MovieCardEnhanced({
     action();
   };
 
-  // Different card sizes based on variant
   const getCardClasses = () => {
     switch (variant) {
       case "compact":
         return "w-[160px]";
       case "detailed":
-        return "w-[280px]";
+        return "w-[240px]";
       case "grid":
         return "w-full max-w-[240px]";
       default:
-        return "md:w-[clamp(200px,16vw,220px)] w-[calc(100vw/2.75)]";
+        return "md:w-[clamp(200px,16vw,200px)] w-[calc(100vw/2.75)] sm:w-[calc(100vw/3.5)]";
     }
   };
 
@@ -83,7 +93,7 @@ function MovieCardEnhanced({
       transition={{ delay: index * 0.1 }}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
-      className={`group relative bg-base-200 rounded-xl overflow-hidden hover:shadow-2xl transition-all duration-300  ${getCardClasses()}`}
+      className={`group relative bg-base-200  overflow-hidden hover:shadow-2xl transition-all duration-300  ${getCardClasses()}`}
     >
       {/* Action buttons */}
       {showActions && (
@@ -92,35 +102,18 @@ function MovieCardEnhanced({
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
-              onClick={(e) => handleAction(() => onAddToFavorites(m._id), e)}
+              onClick={(e) => handleAction(handleAddToFavorites, e)}
               className="btn btn-xs btn-circle bg-black/70 text-white hover:bg-red-500 hover:text-white border-none backdrop-blur-sm"
-              title="Thêm vào yêu thích"
+              title={isFavorite ? "Xóa khỏi yêu thích" : "Thêm vào yêu thích"}
             >
-              <Heart className="w-3 h-3" />
+              {isFavorite ? (
+                <X className="w-3 h-3 fill-current" />
+              ) : (
+                <Heart className="w-3 h-3" />
+              )}
             </motion.button>
           )}
-          {onAddToWatchlist && (
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={(e) => handleAction(() => onAddToWatchlist(m._id), e)}
-              className="btn btn-xs btn-circle bg-black/70 text-white hover:bg-blue-500 hover:text-white border-none backdrop-blur-sm"
-              title="Thêm vào danh sách xem"
-            >
-              <Bookmark className="w-3 h-3" />
-            </motion.button>
-          )}
-          {onShare && (
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={(e) => handleAction(() => onShare(m), e)}
-              className="btn btn-xs btn-circle bg-black/70 text-white hover:bg-green-500 hover:text-white border-none backdrop-blur-sm"
-              title="Chia sẻ"
-            >
-              <Share2 className="w-3 h-3" />
-            </motion.button>
-          )}
+
           {showInfo && (
             <motion.button
               whileHover={{ scale: 1.1 }}
@@ -150,7 +143,11 @@ function MovieCardEnhanced({
           <Image
             width={variant === "detailed" ? 280 : 220}
             height={variant === "detailed" ? 373 : 330}
-            src={`https://phimimg.com/${m.poster_url}` || defaultPoster}
+            src={`${
+              m.poster_url.includes("https://")
+                ? m.poster_url
+                : `https://phimimg.com/${m.poster_url}`
+            }`}
             alt={m.name}
             loading="lazy"
             quality={80}
@@ -175,7 +172,7 @@ function MovieCardEnhanced({
               transition={{ duration: 0.5, ease: "easeOut" }}
               className="bg-primary/95 backdrop-blur-sm rounded-full p-3 shadow-2xl"
             >
-              <Play className="w-8 h-8 text-white fill-current" />
+              <Play className="w-8 h-8 text-primary-content fill-current" />
             </motion.div>
           </div>
 
@@ -265,14 +262,14 @@ function MovieCardEnhanced({
           )}
 
           {/* Stats */}
-          {variant !== "compact" && (
+          {/* {variant !== "compact" && (
             <div className="flex items-center justify-between pt-2 border-t border-base-300">
               <div className="flex items-center gap-1 text-xs text-base-content/60">
                 <Calendar className="w-3 h-3" />
                 <span>{m.year}</span>
               </div>
             </div>
-          )}
+          )} */}
         </div>
       </Link>
 

@@ -56,72 +56,87 @@ const MovieDetailClient: React.FC<MovieDetailClientProps> = ({
   ];
 
   return (
-    <div className="container mx-auto px-6 py-12">
+    <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
       {/* Stats Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-8 sm:mb-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-gradient-to-br from-primary/20 to-primary/5 rounded-2xl p-6 text-center"
+          className="bg-gradient-to-br from-primary/20 to-primary/5 rounded-xl sm:rounded-2xl p-3 sm:p-4 lg:p-6 text-center"
         >
-          <Star className="w-8 h-8 text-primary mx-auto mb-2" />
-          <div className="text-2xl font-bold text-primary">
+          <Star className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-primary mx-auto mb-1 sm:mb-2" />
+          <div className="text-lg sm:text-xl lg:text-2xl font-bold text-primary">
             {movie.tmdb?.vote_average?.toFixed(1) || "N/A"}
           </div>
-          <div className="text-sm text-base-content/60">Đánh giá</div>
+          <div className="text-xs sm:text-sm text-base-content/60">
+            Đánh giá
+          </div>
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-gradient-to-br from-secondary/20 to-secondary/5 rounded-2xl p-6 text-center"
+          className="bg-gradient-to-br from-secondary/20 to-secondary/5 rounded-xl sm:rounded-2xl p-3 sm:p-4 lg:p-6 text-center"
         >
-          <Calendar className="w-8 h-8 text-secondary mx-auto mb-2" />
-          <div className="text-2xl font-bold text-secondary">{movie.year}</div>
-          <div className="text-sm text-base-content/60">Năm sản xuất</div>
+          <Calendar className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-secondary mx-auto mb-1 sm:mb-2" />
+          <div className="text-lg sm:text-xl lg:text-2xl font-bold text-secondary">
+            {movie.year}
+          </div>
+          <div className="text-xs sm:text-sm text-base-content/60">
+            Năm sản xuất
+          </div>
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-gradient-to-br from-accent/20 to-accent/5 rounded-2xl p-6 text-center"
+          className="bg-gradient-to-br from-accent/20 to-accent/5 rounded-xl sm:rounded-2xl p-3 sm:p-4 lg:p-6 text-center"
         >
-          <Film className="w-8 h-8 text-accent mx-auto mb-2" />
-          <div className="text-2xl font-bold text-accent">{movie.quality}</div>
-          <div className="text-sm text-base-content/60">Chất lượng</div>
+          <Film className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-accent mx-auto mb-1 sm:mb-2" />
+          <div className="text-lg sm:text-xl lg:text-2xl font-bold text-accent">
+            {movie.quality}
+          </div>
+          <div className="text-xs sm:text-sm text-base-content/60">
+            Chất lượng
+          </div>
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-gradient-to-br from-info/20 to-info/5 rounded-2xl p-6 text-center"
+          className="bg-gradient-to-br from-info/20 to-info/5 rounded-xl sm:rounded-2xl p-3 sm:p-4 lg:p-6 text-center"
         >
-          <Globe className="w-8 h-8 text-info mx-auto mb-2" />
-          <div className="text-2xl font-bold text-info">
+          <Globe className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-info mx-auto mb-1 sm:mb-2" />
+          <div className="text-lg sm:text-xl lg:text-2xl font-bold text-info">
             {movie.country?.[0]?.name || "N/A"}
           </div>
-          <div className="text-sm text-base-content/60">Quốc gia</div>
+          <div className="text-xs sm:text-sm text-base-content/60">
+            Quốc gia
+          </div>
         </motion.div>
       </div>
 
-      <div className="mb-8">
-        <div className="flex flex-wrap gap-2 mb-6">
+      <div className="mb-6 sm:mb-8">
+        <div className="flex flex-wrap gap-2 sm:gap-3 mb-4 sm:mb-6">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as TabType)}
-              className={`btn btn-lg gap-3 transition-all duration-300 ${
+              className={`btn btn-sm sm:btn-md lg:btn-lg gap-2 sm:gap-3 transition-all duration-300 ${
                 activeTab === tab.id
                   ? "btn-primary shadow-lg shadow-primary/30"
                   : "btn-ghost hover:btn-outline"
               }`}
             >
-              <tab.icon className="w-5 h-5" />
-              {tab.label}
-              {tab.count && <div className="badge badge-sm">{tab.count}</div>}
+              <tab.icon className="w-4 h-4 sm:w-5 sm:h-5" />
+              <span className="hidden sm:inline">{tab.label}</span>
+              <span className="sm:hidden">{tab.label}</span>
+              {tab.count && (
+                <div className="badge badge-xs sm:badge-sm">{tab.count}</div>
+              )}
             </button>
           ))}
         </div>
@@ -165,34 +180,43 @@ const MovieDetailClient: React.FC<MovieDetailClientProps> = ({
             <div className="space-y-6">
               {data.movie.type === "single" ? (
                 <div>
-                  <p className="pb-6 text-2xl font-semibold">Các bản chiếu</p>
-                  <div className="relative w-96 h-48 flex flex-row justify-between hover:-translate-y-2 transition-transform duration-150 rounded-xl">
-                    <div className="flex-3 bg-[#5e6070] rounded-tl-xl rounded-bl-xl">
-                      <div className="flex flex-col items-start justify-evenly gap-4 px-4  h-full">
-                        <p>{data.episodes[0].server_name}</p>
-                        <h1 className="text-lg font-bold">{movie.name}</h1>
+                  <p className="pb-4 sm:pb-6 text-xl sm:text-2xl font-semibold">
+                    Các bản chiếu
+                  </p>
+                  <div className="relative w-full max-w-md sm:max-w-lg lg:max-w-xl h-40 sm:h-48 flex flex-row justify-between hover:-translate-y-2 transition-transform duration-150 rounded-xl mx-auto lg:mx-0">
+                    <div className="flex-[3] bg-[#5e6070] rounded-tl-xl rounded-bl-xl">
+                      <div className="flex flex-col items-start justify-evenly gap-2 sm:gap-4 px-3 sm:px-4 h-full">
+                        <p className="text-sm sm:text-base">
+                          {data.episodes[0].server_name}
+                        </p>
+                        <h1 className="text-base sm:text-lg font-bold line-clamp-2">
+                          {movie.name}
+                        </h1>
                         <div className="flex items-center gap-3">
                           <div>
                             <Link
                               href={"/watch/" + movie.slug}
-                              className="btn btn-secondary"
+                              className="btn btn-secondary btn-sm sm:btn-md"
                             >
-                              Xem bản này
+                              <span className="hidden sm:inline">
+                                Xem bản này
+                              </span>
+                              <span className="sm:hidden">Xem</span>
                             </Link>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div className="flex-2 relative">
+                    <div className="flex-[2] relative">
                       <Image
                         src={movie.poster_url}
                         alt="film"
-                        className="md:brightness-50 object-cover rounded-tr-xl rounded-br-xl h-full"
+                        className="md:brightness-50 object-cover rounded-tr-xl rounded-br-xl h-full w-full"
                         width={640}
                         height={480}
                         priority
                       />
-                      <div className="absolute left-0 bottom-0 right-0  z-0 top-0 rounded-xl">
+                      <div className="absolute left-0 bottom-0 right-0 z-0 top-0 rounded-xl">
                         <div className="h-full bg-gradient-to-l from-transparent to-[#5e6070]"></div>
                       </div>
                     </div>
@@ -213,9 +237,9 @@ const MovieDetailClient: React.FC<MovieDetailClientProps> = ({
                     Hình nền ({photos.backdrops.length})
                   </h3>
                   <div
-                    className={`grid gap-4 ${
+                    className={`grid gap-3 sm:gap-4 ${
                       viewMode === "grid"
-                        ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+                        ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
                         : "grid-cols-1"
                     }`}
                   >
@@ -227,7 +251,7 @@ const MovieDetailClient: React.FC<MovieDetailClientProps> = ({
                           initial={{ opacity: 0, scale: 0.9 }}
                           animate={{ opacity: 1, scale: 1 }}
                           transition={{ delay: index * 0.1 }}
-                          className="group relative rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300"
+                          className="group relative rounded-lg sm:rounded-xl lg:rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300"
                         >
                           <Image
                             src={tmdb.getImage(photo.file_path)}
@@ -235,6 +259,7 @@ const MovieDetailClient: React.FC<MovieDetailClientProps> = ({
                             width={500}
                             height={281}
                             className="w-full h-auto group-hover:scale-105 transition-transform duration-500"
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           />
                           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
                         </motion.div>
@@ -326,10 +351,10 @@ const MovieDetailClient: React.FC<MovieDetailClientProps> = ({
           )}
 
           {activeTab === "info" && (
-            <div className="grid lg:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
               {/* Movie Details */}
-              <div className="space-y-6">
-                <div className="bg-base-200 rounded-2xl p-6">
+              <div className="space-y-4 sm:space-y-6">
+                <div className="bg-base-200 rounded-xl sm:rounded-2xl p-4 sm:p-6">
                   <h3 className="text-xl font-bold mb-4 flex items-center gap-3">
                     <Film className="w-5 h-5 text-primary" />
                     Thông tin phim
@@ -359,13 +384,15 @@ const MovieDetailClient: React.FC<MovieDetailClientProps> = ({
                 </div>
 
                 {/* Categories */}
-                <div className="bg-base-200 rounded-2xl p-6">
-                  <h3 className="text-xl font-bold mb-4">Thể loại</h3>
+                <div className="bg-base-200 rounded-xl sm:rounded-2xl p-4 sm:p-6">
+                  <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">
+                    Thể loại
+                  </h3>
                   <div className="flex flex-wrap gap-2">
                     {movie.category?.map((cat: any) => (
                       <span
                         key={cat.id}
-                        className="badge badge-primary badge-lg"
+                        className="badge badge-primary badge-sm sm:badge-md lg:badge-lg"
                       >
                         {cat.name}
                       </span>
@@ -374,13 +401,15 @@ const MovieDetailClient: React.FC<MovieDetailClientProps> = ({
                 </div>
 
                 {/* Countries */}
-                <div className="bg-base-200 rounded-2xl p-6">
-                  <h3 className="text-xl font-bold mb-4">Quốc gia</h3>
+                <div className="bg-base-200 rounded-xl sm:rounded-2xl p-4 sm:p-6">
+                  <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">
+                    Quốc gia
+                  </h3>
                   <div className="flex flex-wrap gap-2">
                     {movie.country?.map((country: any) => (
                       <span
                         key={country.id}
-                        className="badge badge-secondary badge-lg"
+                        className="badge badge-secondary badge-sm sm:badge-md lg:badge-lg"
                       >
                         {country.name}
                       </span>
@@ -390,30 +419,36 @@ const MovieDetailClient: React.FC<MovieDetailClientProps> = ({
               </div>
 
               {/* Credits */}
-              <div className="space-y-6">
+              <div className="space-y-4 sm:space-y-6">
                 {movie.director.length > 0 && (
-                  <div className="bg-base-200 rounded-2xl p-6">
-                    <h3 className="text-xl font-bold mb-4">Đạo diễn</h3>
-                    <p className="text-base-content/80">
+                  <div className="bg-base-200 rounded-xl sm:rounded-2xl p-4 sm:p-6">
+                    <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">
+                      Đạo diễn
+                    </h3>
+                    <p className="text-sm sm:text-base text-base-content/80">
                       {movie.director.join(", ")}
                     </p>
                   </div>
                 )}
 
                 {movie.actor.length > 0 && (
-                  <div className="bg-base-200 rounded-2xl p-6">
-                    <h3 className="text-xl font-bold mb-4">Diễn viên chính</h3>
-                    <p className="text-base-content/80">
+                  <div className="bg-base-200 rounded-xl sm:rounded-2xl p-4 sm:p-6">
+                    <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">
+                      Diễn viên chính
+                    </h3>
+                    <p className="text-sm sm:text-base text-base-content/80">
                       {movie.actor.slice(0, 5).join(", ")}
                     </p>
                   </div>
                 )}
 
                 {/* Description */}
-                <div className="bg-base-200 rounded-2xl p-6">
-                  <h3 className="text-xl font-bold mb-4">Nội dung phim</h3>
+                <div className="bg-base-200 rounded-xl sm:rounded-2xl p-4 sm:p-6">
+                  <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">
+                    Nội dung phim
+                  </h3>
                   <div
-                    className="prose prose-sm max-w-none text-base-content/80"
+                    className="prose prose-sm sm:prose-base max-w-none text-base-content/80"
                     dangerouslySetInnerHTML={{ __html: movie.content }}
                   />
                 </div>

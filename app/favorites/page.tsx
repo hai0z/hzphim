@@ -1,15 +1,17 @@
 "use client";
+import { usePlayerStore } from "@/store";
 import React, { useState } from "react";
-import WatchedMovieCard from "@/components/MovieCard/WatchedMovieCard";
-import { useContinueWatchingList } from "@/hooks/useContinueWatching";
-import { History, Search, Trash2, AlertTriangle, X } from "lucide-react";
 
-const HistoryPage = () => {
-  const { recentItems, removeItem } = useContinueWatchingList();
+import MovieCardEnhanced from "@/components/MovieCard/MovieCardEnhanced";
+import { Heart, Search, Trash2, AlertTriangle, X } from "lucide-react";
+
+const FavoritesPage = () => {
+  const favorites = usePlayerStore((state) => state.listFavorite);
+  const removeFavorite = usePlayerStore((state) => state.removeFavorite);
   const [showClearModal, setShowClearModal] = useState(false);
 
-  const handleRemoveFromHistory = (movieId: string) => {
-    removeItem(movieId);
+  const handleRemoveFromFavorites = (movieId: string) => {
+    removeFavorite(movieId);
   };
 
   const handleClearAll = () => {
@@ -17,25 +19,25 @@ const HistoryPage = () => {
   };
 
   const confirmClearAll = () => {
-    recentItems.forEach((item) => {
-      removeItem(item.movie._id);
+    favorites.forEach((movie) => {
+      removeFavorite(movie._id);
     });
     setShowClearModal(false);
   };
 
-  if (recentItems.length === 0) {
+  if (favorites.length === 0) {
     return (
       <div className="min-h-screen pt-20 bg-base-100">
         <div className="container mx-auto px-4 py-12">
           <div className="text-center max-w-md mx-auto">
             <div className="w-24 h-24 mx-auto mb-6 bg-base-200 rounded-full flex items-center justify-center">
-              <History className="w-12 h-12 text-base-content/30" />
+              <Heart className="w-12 h-12 text-base-content/30" />
             </div>
             <h1 className="text-3xl font-bold text-base-content mb-4">
-              Chưa có lịch sử xem
+              Chưa có phim yêu thích
             </h1>
             <p className="text-base-content/70 mb-8">
-              Hãy bắt đầu xem phim để tạo lịch sử xem của bạn!
+              Hãy thêm những bộ phim bạn yêu thích để xem lại sau nhé!
             </p>
             <a href="/" className="btn btn-primary gap-2">
               <Search className="w-4 h-4" />
@@ -54,19 +56,17 @@ const HistoryPage = () => {
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
             <div className="p-3 bg-primary/10 rounded-xl">
-              <History className="w-8 h-8 text-primary" />
+              <Heart className="w-8 h-8 text-primary" />
             </div>
             <div>
               <h1 className="text-3xl font-bold text-base-content">
-                Lịch sử xem
+                Phim yêu thích
               </h1>
-              <p className="text-base-content/70">
-                {recentItems.length} bộ phim
-              </p>
+              <p className="text-base-content/70">{favorites.length} bộ phim</p>
             </div>
           </div>
 
-          {recentItems.length > 0 && (
+          {favorites.length > 0 && (
             <button
               onClick={handleClearAll}
               className="btn btn-outline btn-error btn-sm gap-2"
@@ -78,17 +78,17 @@ const HistoryPage = () => {
         </div>
 
         {/* Movies Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-          {recentItems.map((item, index) => (
-            <WatchedMovieCard
-              key={`${item.movie._id}-${item.ep}-${item.ver}`}
-              item={item}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 ">
+          {favorites.map((movie, index) => (
+            <MovieCardEnhanced
+              key={movie._id}
+              m={movie}
               index={index}
-              showProgress
               variant="grid"
-              showRemoveButton
-              showWatchInfo
-              onRemove={() => handleRemoveFromHistory(item.movie._id)}
+              showActions={true}
+              showRating={true}
+              showInfo={true}
+              onAddToFavorites={() => handleRemoveFromFavorites(movie._id)}
             />
           ))}
         </div>
@@ -96,30 +96,24 @@ const HistoryPage = () => {
         {/* Clear All Modal */}
         {showClearModal && (
           <div className="modal modal-open">
-            <div className="modal-box">
+            <div className="modal-box modal-middle">
               {/* Modal Header */}
               <div className="flex items-center gap-3 mb-4">
                 <div className="p-2 bg-error/10 rounded-lg">
                   <AlertTriangle className="w-6 h-6 text-error" />
                 </div>
-                <h3 className="font-bold text-lg">Xác nhận xóa lịch sử</h3>
+                <h3 className="font-bold text-lg">Xác nhận xóa tất cả</h3>
               </div>
 
               {/* Modal Content */}
               <p className="text-base-content/70 mb-6">
                 Bạn có chắc chắn muốn xóa tất cả{" "}
                 <span className="font-semibold text-primary">
-                  {recentItems.length} bộ phim
+                  {favorites.length} bộ phim
                 </span>{" "}
-                khỏi lịch sử xem không? Hành động này không thể hoàn tác.
+                khỏi danh sách yêu thích không? Hành động này không thể hoàn
+                tác.
               </p>
-
-              <div className="alert alert-warning mb-4">
-                <AlertTriangle className="w-4 h-4" />
-                <span className="text-sm">
-                  Bạn sẽ mất thông tin tiến độ xem của tất cả các phim.
-                </span>
-              </div>
 
               {/* Modal Actions */}
               <div className="modal-action">
@@ -135,7 +129,7 @@ const HistoryPage = () => {
                   className="btn btn-error gap-2"
                 >
                   <Trash2 className="w-4 h-4" />
-                  Xóa lịch sử
+                  Xóa tất cả
                 </button>
               </div>
             </div>
@@ -150,4 +144,4 @@ const HistoryPage = () => {
   );
 };
 
-export default HistoryPage;
+export default FavoritesPage;
