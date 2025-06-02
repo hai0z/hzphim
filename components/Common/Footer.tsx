@@ -170,11 +170,11 @@ const Footer = () => {
               </div>
               <div className="flex items-start gap-2 text-base-content/70">
                 <MapPin className="w-4 h-4 mt-0.5" />
-                <span className="text-sm">
+                {/* <span className="text-sm">
                   88/1 Giáp Nhị, Hoàng Mai
                   <br />
                   TP. Hà Nội, Việt Nam
-                </span>
+                </span> */}
               </div>
             </div>
           </div>
