@@ -25,14 +25,15 @@ export const useContinueWatching = ({
     null
   );
 
+  const [hasChecked, setHasChecked] = useState(false);
+
   const checkContinueWatching = useCallback(() => {
-    if (!movieData?.movie?._id) return;
+    if (!movieData?.movie?._id || hasChecked) return;
 
     const existingData = continueWatching.find(
       (item) => item.movie._id === movieData.movie._id
     );
 
-    console.log(existingData);
     if (existingData) {
       if (
         existingData.ep == currentEpisode &&
@@ -42,6 +43,7 @@ export const useContinueWatching = ({
         setShowModal(true);
       }
     }
+    setHasChecked(true);
   }, [movieData, currentEpisode, currentVersion, continueWatching]);
 
   const saveContinueWatching = useCallback(
