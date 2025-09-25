@@ -67,10 +67,11 @@ const MovieSearch: React.FC = () => {
   const handleSelect = (movie: Item) => {
     setSearchTerm(movie.name);
     setIsOpen(false);
+    setResults([]);
   };
 
   return (
-    <div className="relative w-full max-w-lg mx-auto">
+    <div className="relative w-full max-w-lg mx-auto z-[999999]">
       <div
         className={classNames("dropdown w-full", {
           "dropdown-open": isOpen && results.length > 0,
@@ -109,11 +110,6 @@ const MovieSearch: React.FC = () => {
         )}
         {isOpen && results.length > 0 && (
           <div className="dropdown-content bg-base-200 rounded-box mt-2 w-full overflow-auto shadow-lg z-10">
-            {loading && (
-              <div className="flex justify-center items-center h-24">
-                <div className="w-12 h-12 border-b-4 border-primary rounded-full animate-spin"></div>
-              </div>
-            )}
             <ul className="menu menu-compact w-full">
               {results.map((movie) => (
                 <li
@@ -147,6 +143,16 @@ const MovieSearch: React.FC = () => {
                   </Link>
                 </li>
               ))}
+
+              {/* Nút xem tất cả */}
+              <li className="py-2 text-center">
+                <Link
+                  href={`/search?keyword=${encodeURIComponent(searchTerm)}`}
+                  className="btn btn-sm btn-primary w-full"
+                >
+                  Xem tất cả
+                </Link>
+              </li>
             </ul>
           </div>
         )}

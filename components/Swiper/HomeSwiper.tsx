@@ -20,6 +20,7 @@ import { FaCircleInfo, FaHeart } from "react-icons/fa6";
 import { defaultPoster } from "@/constants";
 import { usePlayer } from "@/hooks/useStores";
 import { toast } from "react-toastify";
+import { imgResize } from "@/app/utils/imgResize";
 
 interface IHomeSwiperProps {
   data: Item[];
@@ -69,7 +70,7 @@ const HomeSwiper: React.FC<IHomeSwiperProps> = ({ data, listOverView }) => {
                 <motion.div className="w-full z-10" key={currentIndex}>
                   <Link href={`${"/movie/" + m._id}#top`} prefetch={false}>
                     <Image
-                      src={m.thumb_url || defaultPoster}
+                      src={imgResize(m.thumb_url) || defaultPoster}
                       alt="film"
                       className="w-full object-cover h-[50vh] sm:h-[60vh] md:h-[70vh] lg:h-[80vh]"
                       width={1920}
@@ -244,7 +245,7 @@ const HomeSwiper: React.FC<IHomeSwiperProps> = ({ data, listOverView }) => {
                         layout
                       >
                         <Image
-                          src={m.poster_url || defaultPoster}
+                          src={imgResize(m.poster_url) || defaultPoster}
                           width={300}
                           height={450}
                           loading="lazy"

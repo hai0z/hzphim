@@ -119,6 +119,39 @@ const getListMovieByCountry = async (
   );
   return response.json();
 };
+const searchMovie = async (
+  params: MovieListParams
+): Promise<{
+  data: {
+    items: Item[];
+    params: {
+      pagination: Pagination;
+    };
+  };
+}> => {
+  const queryParams = new URLSearchParams();
+  queryParams.delete("type_list");
+
+  if (params.page) queryParams.append("page", params.page.toString());
+  if (params.sort_field) queryParams.append("sort_field", params.sort_field);
+  if (params.sort_type) queryParams.append("sort_type", params.sort_type);
+  if (params.sort_lang) queryParams.append("sort_lang", params.sort_lang);
+  if (params.year) queryParams.append("year", params.year.toString());
+  if (params.limit) queryParams.append("limit", params.limit.toString());
+  if (params.category) queryParams.append("category", params.category);
+  if (params.country) queryParams.append("country", params.country);
+
+  console.log(queryParams.toString(), "hehehe");
+  const response = await fetch(
+    `${APIURL}/v1/api/tim-kiem?keyword=${
+      params.keyword
+    }&${queryParams.toString()}`,
+    {
+      cache: "no-cache",
+    }
+  );
+  return response.json();
+};
 
 export {
   getNewReleaseMovie,
@@ -126,4 +159,5 @@ export {
   getListMovieByType,
   getListMovieByCategory,
   getListMovieByCountry,
+  searchMovie,
 };

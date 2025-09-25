@@ -4,21 +4,9 @@ import { Item } from "@/type/ListMovieRespone";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  Play,
-  Star,
-  Calendar,
-  Clock,
-  Film,
-  Heart,
-  Info,
-  Bookmark,
-  Share2,
-  HeartMinus,
-  X,
-} from "lucide-react";
-import { defaultPoster } from "@/constants";
+import { Play, Star, Clock, Film, Heart, Info, X } from "lucide-react";
 import usePlayerStore from "@/store/playerStore";
+import { imgResize } from "@/app/utils/imgResize";
 
 interface MovieCardEnhancedProps {
   m: Item;
@@ -145,8 +133,8 @@ function MovieCardEnhanced({
             height={variant === "detailed" ? 373 : 330}
             src={`${
               m.poster_url.includes("https://")
-                ? m.poster_url
-                : `https://phimimg.com/${m.poster_url}`
+                ? imgResize(m.poster_url)
+                : imgResize(`https://phimimg.com/${m.poster_url}`)
             }`}
             alt={m.name}
             loading="lazy"

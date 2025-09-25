@@ -24,4 +24,5 @@ export interface MovieListParams {
   country?: string;
   year?: number;
   limit?: number;
+  keyword?: string;
 }

@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
+
+import { Inter } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import NextTopLoader from "nextjs-toploader";
 import ToastProvider from "@/provider/ToastProvider";
 import Header from "@/components/Common/Header";
 import Footer from "@/components/Common/Footer";
-const roboto_Serif = Inter({
+
+const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
 });
@@ -23,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${roboto_Serif.variable} antialiased`}>
+      <body className={inter.className}>
         <ThemeProvider attribute="data-theme" defaultTheme="dark">
           <NextTopLoader showSpinner={false} color="var(--color-primary)" />
           <Header />

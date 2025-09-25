@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
       "www.youtube.com",
       "phimimg.com",
       "dpcpa.com",
+      "phimapi.com",
     ],
     unoptimized: false,
   },

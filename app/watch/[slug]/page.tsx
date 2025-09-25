@@ -1,16 +1,12 @@
 import {
   ChevronLeft,
   ChevronRight,
-  Play,
   Star,
   Calendar,
   Clock,
   Film,
   Users,
   Info,
-  Bookmark,
-  Heart,
-  Share2,
 } from "lucide-react";
 import React from "react";
 import Link from "next/link";
@@ -21,7 +17,6 @@ import Image from "next/image";
 import ListEpisodes from "@/components/Shared/ListEpisodes";
 import PlayerActionButton from "@/app/watch/_components/PlayerActionButton";
 import TheaterModeWraper from "@/app/watch/_components/TheaterModeWraper";
-import CustomVideoPlayer from "../_components/CustomVideoPlayer";
 
 interface IProps {
   params: Promise<{
@@ -47,10 +42,10 @@ const PageEnhanced: React.FC<IProps> = async ({ params, searchParams }) => {
   let ver = (await searchParams).ver || 0;
 
   const data = await getMovieDetail(slug);
-  if (+ver > 1) {
+  if (Number(ver) > 1) {
     ver = "0";
   }
-  if (+ep > data.episodes[+ver].server_data.length) {
+  if (Number(ep) > data.episodes[Number(ver)].server_data.length) {
     ep = "1";
   }
 
@@ -70,7 +65,7 @@ const PageEnhanced: React.FC<IProps> = async ({ params, searchParams }) => {
   }
   if (movie.type == "series" || movie.type == "hoathinh") {
     if (ver && ep) {
-      link = data.episodes[+ver].server_data[+ep - 1].link_m3u8;
+      link = data.episodes[Number(ver)].server_data[Number(ep) - 1].link_m3u8;
     }
   }
 

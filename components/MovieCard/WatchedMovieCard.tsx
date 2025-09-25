@@ -7,6 +7,7 @@ import { Play, X, Clock, Film } from "lucide-react";
 import { ContinueWatching } from "@/store/playerStore";
 import { formatWatchTime, getWatchProgress } from "@/hooks/useContinueWatching";
 import { defaultPoster } from "@/constants";
+import { imgResize } from "@/app/utils/imgResize";
 
 interface WatchedMovieCardProps {
   item: ContinueWatching;
@@ -102,7 +103,7 @@ const WatchedMovieCard: React.FC<WatchedMovieCardProps> = ({
           )}
 
           <Image
-            src={item.movie.poster_url || defaultPoster}
+            src={imgResize(item.movie.poster_url) || defaultPoster}
             alt={item.movie.name}
             className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-110 ${
               imageLoaded ? "opacity-100" : "opacity-0"

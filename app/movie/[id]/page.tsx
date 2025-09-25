@@ -9,6 +9,7 @@ import { BiHeart } from "react-icons/bi";
 import { defaultPoster } from "@/constants";
 import AddToFavoriteButton from "../_components/AddToFavoriteButton";
 import ParallaxImage from "../_components/ParallaxImage";
+import { imgResize } from "@/app/utils/imgResize";
 
 type Props = {
   params: Promise<{
@@ -47,7 +48,7 @@ export default async function MovieDetailEnhanced({ params }: Props) {
     <div className="min-h-screen bg-base-100">
       {/* Parallax Hero Section */}
       <ParallaxImage
-        src={movie.thumb_url || defaultPoster}
+        src={imgResize(movie.thumb_url) || defaultPoster}
         alt={movie.name}
         className="h-[75vh] sm:h-screen"
         intensity={0.3}
@@ -60,7 +61,7 @@ export default async function MovieDetailEnhanced({ params }: Props) {
                 <TiltCard>
                   <div className="relative group">
                     <Image
-                      src={movie.poster_url || defaultPoster}
+                      src={imgResize(movie.poster_url) || defaultPoster}
                       alt={movie.name}
                       width={300}
                       height={450}

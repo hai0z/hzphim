@@ -76,6 +76,9 @@ const FilterButton = () => {
     const newURL = queryString ? `?${queryString}` : window.location.pathname;
     setShowFilter(false);
 
+    if (searchParams.get("keyword")) {
+      redirect(`/search?keyword=${searchParams.get("keyword")}&${queryString}`);
+    }
     redirect(`/filter${newURL}`);
   };
 
@@ -181,22 +184,24 @@ const FilterButton = () => {
 
                 {/* Filter Sections - Compact Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  <FilterSection
-                    title="Loại phim"
-                    items={TypeList}
-                    filterKey="type_list"
-                    idKey="slug"
-                  />
+                  {!searchParams.get("keyword") && (
+                    <FilterSection
+                      title="Loại phim"
+                      items={TypeList}
+                      filterKey="type_list"
+                      idKey="slug"
+                    />
+                  )}
 
                   <FilterSection
                     title="Thể loại"
-                    items={theLoai} // Chỉ hiển thị 8 thể loại đầu
+                    items={theLoai}
                     filterKey="category"
                   />
 
                   <FilterSection
                     title="Quốc gia"
-                    items={quocGia} // Chỉ hiển thị 6 quốc gia đầu
+                    items={quocGia}
                     filterKey="country"
                   />
 
@@ -209,7 +214,7 @@ const FilterButton = () => {
 
                   <FilterSection
                     title="Năm"
-                    items={YearList} // Chỉ hiển thị 6 năm gần nhất
+                    items={YearList}
                     filterKey="year"
                     idKey="slug"
                   />
