@@ -1,4 +1,3 @@
-import MovieCardEnhanced from "@/components/MovieCard/MovieCardEnhanced";
 import FilterButton from "@/components/MovieFilter/FilterButton";
 import ListMovie from "@/components/Shared/ListMovie";
 import { getListMovieByType } from "@/service/KKPhimService";

@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
       "dpcpa.com",
       "phimapi.com",
     ],
-    unoptimized: false,
+    unoptimized: true,
   },
 
   env: {
